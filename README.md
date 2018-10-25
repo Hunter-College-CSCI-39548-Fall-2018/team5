@@ -2,4 +2,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 google-civic-api
 =====
-A simple project.
+
+
+# TODO
+Update this README.md
+
+## Usage
+cd frontend
+*there's definitely some steps in here to get a React App setup*
+npm install
+npm start

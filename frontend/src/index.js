@@ -6,16 +6,16 @@ class App extends React.Component {
     render() {
         let data = [
             {
-                title: "Search by Area",
-                content: "aaaaaaaaa"
+                title: "Search by Address",
+                content: "Handle address input."
             },
             {
                 title: "Search Specific",
-                content: "bbbbbbbbbbbbbb"
+                content: "Handle specific candidate searches."
             },
             {
                 title: "How to Vote",
-                content: "ccccccccccccc"
+                content: "Show links for voting information."
             }
         ];
         return (
@@ -41,7 +41,8 @@ class PollyForm extends React.Component {
         });
     }
 
-    click(i) {
+    submit(i) {
+        console.log()
         const newForm = this.state.pollyContent.slice();
         const index = newForm.indexOf(i)
         
@@ -52,12 +53,18 @@ class PollyForm extends React.Component {
     render() {
         const sections = this.state.pollyContent.map((i) => (
             <div key={this.state.pollyContent.indexOf(i)}>
-                <div className="title" onClick={this.click.bind(this, i)}>
+                <div className="title">
                     <div className="arrow-wrapper">
                         <i className={i.open ? "fa fa-angle-down fa-rotate-180" : "fa fa-angle-down"}></i>
                     </div>
                     <span className="title-text">
-                        <input class="form-control" type="search" placeholder={i.title} aria-label="Search"></input>
+                        <input class="form-control" type="text" placeholder={i.title} 
+                        onKeyPress={(e) => {
+                            if(e.key === 'Enter'){
+                                this.submit(i)
+                            }
+                        }}>
+                        </input>
                     </span>
                 </div>
                 <div className={i.open ? "content content-open" : "content"}>
@@ -75,6 +82,5 @@ class PollyForm extends React.Component {
         )
     }
 }
-
 
 ReactDOM.render(<App />, document.getElementById('root'));

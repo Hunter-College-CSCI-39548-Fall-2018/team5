@@ -10,5 +10,7 @@ Update this README.md
 ## Usage
 cd frontend
 *there's definitely some steps in here to get a React App setup*
+
 npm install
+
 npm start

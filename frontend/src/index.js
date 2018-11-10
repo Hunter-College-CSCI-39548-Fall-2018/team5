@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import $ from 'jquery'; 
 import './index.css';
 
 class App extends React.Component {
@@ -42,11 +43,27 @@ class PollyForm extends React.Component {
     }
 
     submit(i) {
-        console.log()
-        const newForm = this.state.pollyContent.slice();
-        const index = newForm.indexOf(i)
-        
-        newForm[index].open = !newForm[index].open;
+        var new_content
+        let newForm = this.state.pollyContent.slice();
+        let index = newForm.indexOf(i)
+        $.ajax({
+            url : 'http://localhost:5000/getCandidatesByOffice',
+            type: 'GET',
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            success:function(data){
+                console.log(data)
+                console.log(data.positions_and_candidates)
+                // console.log(new_content)
+                newForm[0].content = new_content
+                newForm[index].open = !newForm[index].open;
+            },
+            error:function(){
+                console.log("Error.")
+            }
+        })
         this.setState({pollyContent: newForm});
     }
 
@@ -58,7 +75,7 @@ class PollyForm extends React.Component {
                         <i className={i.open ? "fa fa-angle-down fa-rotate-180" : "fa fa-angle-down"}></i>
                     </div>
                     <span className="title-text">
-                        <input class="form-control" type="text" placeholder={i.title} 
+                        <input className="form-control" type="text" placeholder={i.title} 
                         onKeyPress={(e) => {
                             if(e.key === 'Enter'){
                                 this.submit(i)

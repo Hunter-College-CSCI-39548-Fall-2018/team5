@@ -43,7 +43,10 @@ class PollyForm extends React.Component {
     }
 
     submit(i) {
-        var new_content
+        // Handle cases for three buttons:
+        // by specific name
+        // by address
+        // third button displays links to voting info
         let newForm = this.state.pollyContent.slice();
         let index = newForm.indexOf(i)
         $.ajax({
@@ -55,9 +58,9 @@ class PollyForm extends React.Component {
             dataType: 'json',
             success:function(data){
                 console.log(data)
-                console.log(data.positions_and_candidates)
-                // console.log(new_content)
-                newForm[0].content = new_content
+                // this is not ideal
+                console.log(data.positions_and_candidates[0]['US Congress District 8'][0])
+                newForm[0].content = data.positions_and_candidates[0]['US Congress District 8'][0]
                 newForm[index].open = !newForm[index].open;
             },
             error:function(){

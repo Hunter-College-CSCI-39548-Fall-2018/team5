@@ -45,13 +45,11 @@ def getCandidatesByOffice():
                         individual_info.append(individual.get('name'))
                         individual_info.append(individual.get('party'))
                         candidate.append({office: individual_info})
-    jsonStr = json.dumps(candidate)
-
-    # return jsonify (positions_and_candidates = jsonStr)
+    # jsonStr = json.dumps(candidate)
 
     # I need these because I'm working on different ports with ReactJs
-    # print(response)
-    resp = jsonify(positions_and_candidates=jsonStr)
+    # jsonify candidates directly to make the frontend response neater
+    resp = jsonify(positions_and_candidates=candidate)
     resp.headers.add('Access-Control-Allow-Origin', '*')
     return resp
 

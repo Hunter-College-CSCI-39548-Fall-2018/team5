@@ -42,11 +42,23 @@ class PollyForm extends React.Component {
         });
     }
 
-    submit(i) {
+    submit(i, title) {
         // Handle cases for three buttons:
         // by specific name
         // by address
         // third button displays links to voting info
+        /*
+        SWITCH HANDLES DIFFERENT SEARCH BARS
+        Address,
+        Specific,
+        GENERAL INFO ( NOT AN ACTUAL SEARCH )
+        switch(title) {
+            case "Search by Address":
+                console.log("Search by Address")
+                break;
+        }
+        */
+       console.log(title)
         let newForm = this.state.pollyContent.slice();
         let index = newForm.indexOf(i)
         $.ajax({
@@ -81,7 +93,7 @@ class PollyForm extends React.Component {
                         <input className="form-control" type="text" placeholder={i.title} 
                         onKeyPress={(e) => {
                             if(e.key === 'Enter'){
-                                this.submit(i)
+                                this.submit(i, i.title)
                             }
                         }}>
                         </input>

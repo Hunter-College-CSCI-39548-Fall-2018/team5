@@ -10,41 +10,42 @@ API_KEY = open("api.txt", "r")
 service = build('civicinfo', 'v2', developerKey=API_KEY.readline())
 app = Flask(__name__)
 
-'''
-encapsulate this request to GoogleCivic so it's called from within our endpoint
-
 address = "Brooklyn 3039 Ocean Pkwy NY 11235"
 request = service.elections().voterInfoQuery(
     address=address,
     electionId=2000,
     returnAllAvailableData=True)
 response = request.execute()
-'''
 
 
 @app.route('/getCandidatesByOffice', methods=['GET', 'POST'])
 def getCandidatesByOffice():
+    '''
+    encapsulate this request to GoogleCivic for each request made to
+    this endpoint
+
     address = "Brooklyn 3039 Ocean Pkwy NY 11235"
     request = service.elections().voterInfoQuery(
         address=address,
         electionId=2000,
-        returnAllAvailableData=True
-        )
+        returnAllAvailableData=True)
     response = request.execute()
+    '''
 
     candidate = []
     offices = []
     for office in response.get('contests', []):
         offices.append(office.get('office'))
     for reps in response.get('contests', []):
-        for office in offices:
+        for i, office in enumerate(offices):
             if office == reps.get('office') and office is not None:
                 for individual in reps.get('candidates'):
                     if individual is not None:
                         individual_info = []
+                        individual_info.append(office)
                         individual_info.append(individual.get('name'))
                         individual_info.append(individual.get('party'))
-                        candidate.append({office: individual_info})
+                        candidate.append({i: individual_info})
     # jsonStr = json.dumps(candidate)
 
     # I need these because I'm working on different ports with ReactJs

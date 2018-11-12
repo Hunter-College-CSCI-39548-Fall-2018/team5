@@ -59,8 +59,8 @@ class PollyForm extends React.Component {
             success:function(data){
                 console.log(data)
                 // this is not ideal
-                console.log(data.positions_and_candidates[0]['US Congress District 8'][0])
-                newForm[0].content = data.positions_and_candidates[0]['US Congress District 8'][0]
+                console.log(data.positions_and_candidates[0][0][0])
+                newForm[0].content = data.positions_and_candidates[0][0][0]
                 newForm[index].open = !newForm[index].open;
             },
             error:function(){

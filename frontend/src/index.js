@@ -26,9 +26,10 @@ class App extends React.Component {
 }
 
 class PollyForm extends React.Component {
-    componentWillMount() {
+    constructor(props){
+        super(props)
         let pollyform = [];
-        
+
         this.props.data.forEach((i) => {
             pollyform.push({
                 title: i.title,
@@ -37,9 +38,7 @@ class PollyForm extends React.Component {
             });
         });
 
-        this.setState({
-            pollyContent: pollyform
-        });
+        this.state = { pollyContent: pollyform };
     }
 
     submit(i, title) {

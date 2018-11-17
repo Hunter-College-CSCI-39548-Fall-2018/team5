@@ -62,6 +62,7 @@ def getCandidatesByOffice():
     # jsonify candidates directly to make the frontend response neater
     resp = jsonify(positions_and_candidates=candidate)
     resp.headers.add('Access-Control-Allow-Origin', '*')
+    resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     return resp
 
 #Currently one way to find candidate ids, more work is needed here

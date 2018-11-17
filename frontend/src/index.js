@@ -5,7 +5,7 @@ import './index.css';
 
 class App extends React.Component {
     render() {
-        // data = default vals for the search forms
+        // data = default values for the search forms
         let data = [
             {
                 title: "Search by Address",
@@ -21,7 +21,9 @@ class App extends React.Component {
             }
         ];
         return (
-            <PollyForm data={data} />
+            <div>
+                <PollyForm data={data} />
+            </div>
         );
     }
 }

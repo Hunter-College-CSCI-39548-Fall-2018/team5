@@ -44,7 +44,7 @@ class PollyForm extends React.Component {
                         let newForm = this.state.pollyContent.slice();
                         let index = newForm.indexOf(i)
                         console.log(data)
-                        console.log(data.positions_and_candidates[0][0][0])
+                        // console.log(data.positions_and_candidates[0][0][0])
                         newForm[0].content = data.positions_and_candidates[0][0][0]
                         newForm[index].open = !newForm[index].open;
                         this.setState({pollyContent: newForm});
@@ -55,7 +55,12 @@ class PollyForm extends React.Component {
                 })
                 break;
             case "Search Specific":
+                // Needs implementing!
                 console.log("Search Specific")
+                let newForm = this.state.pollyContent.slice();
+                let index = newForm.indexOf(i)
+                newForm[index].open = !newForm[index].open;
+                this.setState({pollyContent: newForm});
                 break;
             default:
                 console.warn("Error in title")

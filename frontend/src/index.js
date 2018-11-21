@@ -6,20 +6,11 @@ import './index.css';
 class App extends React.Component {
     render() {
         // data = default values for the search forms
-        let data = [
-            {
-                title: "Search by Address",
-                content: "Handle address input."
-            },
-            {
-                title: "Search Specific",
-                content: "Handle specific candidate searches."
-            },
-            {
-                title: "How to Vote",
-                content: "Show links for voting information."
-            }
-        ];
+        let data = {
+            title: 'Search by Address',
+            content: '',
+            candidates: []
+        }
         return (
             <div>
                 <PollyForm data={data} />

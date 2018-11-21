@@ -51,11 +51,18 @@ def getCandidatesByOffice():
             if office == reps.get('office') and office is not None:
                 for individual in reps.get('candidates'):
                     if individual is not None:
+                        '''
                         individual_info = []
-                        individual_info.append(office)
-                        individual_info.append(individual.get('name'))
-                        individual_info.append(individual.get('party'))
+                        individual_info.append({'office': office})
+                        individual_info.append({'name': individual.get('name')})
+                        individual_info.append({'party': individual.get('party')})
                         candidate.append({i: individual_info})
+                        '''
+                        candidate.append({
+                            'office': office,
+                            'name': individual.get('name'),
+                            'party': individual.get('party')
+                        })
     # jsonStr = json.dumps(candidate)
 
     # I need these because I'm working on different ports with ReactJs

@@ -7,7 +7,10 @@ class PollyForm extends React.Component {
     constructor(props){
         super(props)
 
-        this.state = {hasData: false};
+        this.state = {
+            has_data: false,
+            candidates: []
+        };
     }
 
     submit(i) {
@@ -31,7 +34,9 @@ class PollyForm extends React.Component {
                 // console.log(data.positions_and_candidates[0][0][0])
                 // this.props.content = data.positions_and_candidates[0][0][0]
                 // this.props.open = !this.props.open;
-                this.setState({hasData: true});
+                this.setState({
+                    hasData: true,
+                });
             },
             error:function(){
                 console.log("Error.")
@@ -70,7 +75,7 @@ class PollyForm extends React.Component {
     renderList() {
         return (
             <div>
-                <Candidate data={this.props.data.candidates} /> a
+                <Candidate data={this.state.has_data ? this.state.candidates : this.state.has_data} /> a
             </div>
         )
     }

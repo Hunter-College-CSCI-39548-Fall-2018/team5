@@ -8,8 +8,7 @@ class App extends React.Component {
         // data = default values for the search forms
         let data = {
             title: 'Search by Address',
-            content: '',
-            candidates: []
+            content: ''
         }
         return (
             <div>

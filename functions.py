@@ -3,15 +3,14 @@
 #they belong
 from flask import Flask, jsonify, json, current_app
 from apiclient.discovery import build
-from votesmart import votesmart
 import csv, requests, pprint
 import xml.etree.ElementTree as ET
 
 API_KEY1 = open("google_api.txt", "r")
-service = build('civicinfo', 'v2', developerKey=API_KEY1.readline())
+service = build('civicinfo', 'v2', developerKey=API_KEY1.readline().splitlines())
 
 VOTESMART_API_FILE = open("votesmart_api.txt", "r")
-VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
+VOTESMART_API_KEY = VOTESMART_API_FILE.readline().splitlines()
 
 app = Flask(__name__)
 
@@ -78,7 +77,7 @@ firstName = "Andrew"
 lastName = "Cuomo"
 state = "NY"
 def getCandidateId(firstName, lastName):
-    with open('id_matrix.csv', mode='r') as csv_file:
+    with open('id_matrix.csv', encoding="utf8") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:

@@ -11,6 +11,7 @@ body {
   background-color: transparent;
   margin: auto;
   margin-top: 10%;
+  position: relative;
 }
 
 .title {
@@ -22,7 +23,8 @@ body {
   position: relative;
   padding: 21px;
   border-radius: 14px;
-  margin-top: 7px;
+  margin-top: 1em;
+  margin-bottom: 1em;
   transition: all .2s ease-in;
 }
 
@@ -46,7 +48,7 @@ body {
 
 .content-open {
   margin-top: 0px;
-  height: 100px;
+  height: fit-content;
 }
 
 .content-text {

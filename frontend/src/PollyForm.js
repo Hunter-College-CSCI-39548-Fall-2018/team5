@@ -1,8 +1,8 @@
 import React from 'react';
 import $ from 'jquery'; 
 import Candidate from './Candidate'
-// Form used for ADDRESS and SPECIFIC CANDIDATE querying
 
+// Form used for ADDRESS querying
 class PollyForm extends React.Component {
     constructor(props){
         super(props)

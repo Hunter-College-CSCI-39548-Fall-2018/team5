@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PollyForm from './PollyForm'
+import SpecificCand from './SpecificCand'
 // import CandidateProfile from './CandidateProfile'
 import Header from './Header'
 // See ../node_modules/bootstrap/scss/_variables.scss to adjust bootstrap variables
@@ -22,6 +23,7 @@ class App extends React.Component {
             <div>
                 <Header title="PollyWannaVote" />
                 <PollyForm data={data} />
+                    <SpecificCand title="Specific Candidate" />
             </div>
         );
     }

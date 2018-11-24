@@ -28,7 +28,11 @@ class Candidate extends React.Component {
                     <Route 
                         path={"/getCandidatesInfo/" + i.name + i.party} 
                         render={(props) => (
-                            <CandidateProfile {...props} opened={false} />
+                            <CandidateProfile {...props} 
+                            placeholder_data={'placeholder'}
+                            name={i.name}
+                            office={i.office}
+                            />
                         )}
                     />
                     

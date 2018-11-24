@@ -11,7 +11,11 @@ class App extends React.Component {
     render() {
         // data = default values for the search forms
         let data = {
-            title: 'Search by Address',
+            city: 'City',
+            address_one: 'Street Address',
+            address_two: 'Apartment',
+            state: 'State',
+            zip: 'Zip Code',
             content: ''
         }
         return (

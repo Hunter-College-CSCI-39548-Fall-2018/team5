@@ -1,6 +1,5 @@
 from flask import Flask, request, url_for
 from flask_mail import Mail, Message
-from flaskext.mysql import MySQL
 import time
 from validate_email import validate_email
 app = Flask(__name__)
@@ -22,7 +21,7 @@ def index():
     msg.body = 'Your link is {}'.format(link)
     if(validate_email(email)):
         mail.send(msg)
-        return '<h1>Please cofirm your e-mail{}.</h1>'.format(email)
+        return '<h1>Please cofirm your e-mail:{}.</h1>'.format(email)
     else:
         return 'Invalid E-mail' 
     

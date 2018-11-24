@@ -10,7 +10,7 @@ body {
   width: 85%;
   background-color: transparent;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 10%;
 }
 
 .title {
@@ -21,7 +21,6 @@ body {
   line-height: 2;
   position: relative;
   padding: 21px;
-  z-index: 2000;
   border-radius: 14px;
   margin-top: 7px;
   transition: all .2s ease-in;
@@ -41,7 +40,6 @@ body {
   font-size: 14px;
   text-align: center;
   position: relative;
-  z-index: 1000;
   text-align: center;
   height: 0;
 }
@@ -112,7 +110,6 @@ body {
 
 .candwrapper {
   color: white;
-  z-index: 2000;
   border-radius: 14px;
   transition: all .2s ease-in;
 }
@@ -123,13 +120,12 @@ body {
   letter-spacing: 2px;
   line-height: 2;
   position: relative;
-  z-index: 2000;
   transition: all .2s ease-in;
   padding: 8px;
   border-bottom: 2px solid rgb(53, 156, 99);
 }
 
 .candyprofilewrapper {
-  height: 100vh;
+  height: 90vh;
   background-color: red;
 }

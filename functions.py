@@ -1,9 +1,12 @@
+#!/usr/bin/python3
+
 #Going to 127.0.0.1:5000/getCandidatesByOffice will return json object with offices that are up
 #for election with the candidates that are running for those offices along with to what party
 #they belong
+
 from flask import Flask, jsonify, json, current_app
 from apiclient.discovery import build
-import csv, requests, pprint
+import csv, requests, pprint, codecs
 import xml.etree.ElementTree as ET
 
 API_KEY1 = open("google_api.txt", "r")
@@ -76,15 +79,19 @@ candidate_id = 0
 firstName = "Andrew"
 lastName = "Cuomo"
 state = "NY"
+data = 0
+
 def getCandidateId(firstName, lastName):
-    with open('id_matrix.csv', encoding="utf8") as csv_file:
+    with codecs.open('id_matrix.csv', mode='r', encoding="utf-8") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        candidate_id = 0
         line_count = 0
         for row in csv_reader:
+            #print(type(data))
             if firstName in row:
                 if lastName in row:
                     if state in row:
-                        #print(row)
+                        print(row)
                         candidate_id = row[0]  #can have multiples, need to think about it
                         line_count += 1
             line_count += 1

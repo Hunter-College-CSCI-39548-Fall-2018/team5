@@ -22,13 +22,13 @@ def getCandidatesByOffice(address):
 
     candidate = []
     offices = []
-    #state_for_id = None  --- id info if we add this
-    #fname_for_id = None
-    #lname_for_id = None
+    state_for_id = None  #-- id info if we add this
+    fname_for_id = None
+    lname_for_id = None
 
-    #for elem in response.get('normalizedInput').items():
-        #if elem[0] == 'state':
-            #state_for_id = elem[1]
+    for elem in response.get('normalizedInput').items():
+        if elem[0] == 'state':
+            state_for_id = elem[1]
     for office in response.get('contests', []):
         offices.append(office.get('office'))
     for reps in response.get('contests', []):
@@ -36,22 +36,31 @@ def getCandidatesByOffice(address):
             if office == reps.get('office') and office is not None:
                 for individual in reps.get('candidates'):
                     if individual is not None:
-                        #name = individual.get('name').split()
-                        #fname_for_id = name[0]
-                        #lname_for_id = name[-1]
-                        #votesmart_id = getCandidateId(fname_for_id, lname_for_id, state_for_id)
-                        #print(id)
+                        name = individual.get('name').split()
+                        fname_for_id = name[0]
+                        lname_for_id = name[-1]
+                        votesmart_id = getIdByLastName(fname_for_id, lname_for_id, state_for_id)
                         candidate.append({
                             'office': office,
                             'name': individual.get('name'),
                             'party': individual.get('party'),
-                            #'id': votesmart_id
+                            'id': votesmart_id
                         })
 
     resp = jsonify(positions_and_candidates=candidate)
     resp.headers.add('Access-Control-Allow-Origin', '*')
     resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     return resp
+
+def getIdByLastName(first_name, last_name, state):
+    request_id = requests.get("http://api.votesmart.org/Candidates.getByLastname?key={}&lastName={}".format(VOTESMART_API_KEY, last_name))
+    root = ET.fromstring(request_id.content)
+    cand_id = 0
+    for elem in root.findall('.//candidate'):
+        for item in elem.findall(".//firstName"):
+            if first_name in item.text:
+                cand_id = elem.find(".//candidateId").text
+    return cand_id
 
 
 @app.route('/getCandidatesByOffice', methods=['GET', 'POST'])
@@ -65,8 +74,6 @@ def areaSearch():
 
 #Currently one way to find candidate ids, more work is needed here
 def getCandidateId(firstName, lastName, state):
-    #with open('id_matrix.csv', mode='r') as csv_file:  --- python 2 version
-        #csv_reader = csv.reader(csv_file, delimiter=',')
      with open('id_matrix.csv', encoding="utf8") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
@@ -86,7 +93,6 @@ def getCandidateInfo(candidate_id):
         r = requests.get("http://api.votesmart.org/CandidateBio.getBio?key={}&candidateId={}".format(VOTESMART_API_KEY, candidate_id))
         root = ET.fromstring(r.content)
         candidate_info = {}
-        count = 0
         for child in root.iter('*'):
             if child.tag == 'preferredName':
                 if child.text == None:
@@ -148,7 +154,7 @@ def getCandidateInfo(candidate_id):
 @app.route('/getCandidatesInfo', methods=['GET', 'POST'])
 def candidateSearch():
     address = "3039 Ocean Pkwy Brooklyn NY 11235"
-    getCandidatesByOffice(address)
+    #getCandidatesByOffice(address)
     if request.method == 'GET':
         #candidate_name = request.args.get('name', None)
         candidate_name = 'Alexandria Ocasio-Cortez' #testing purposes

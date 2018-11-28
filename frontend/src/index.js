@@ -20,6 +20,12 @@ class App extends React.Component {
             zip: 'Zip Code',
             content: ''
         }
+        let profile = {
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            state: 'State',
+            content: ''
+        }
         let links = {
             stackoverflow: 'https://www.stackoverflow.com',
             google: 'https://www.google.com',
@@ -29,7 +35,7 @@ class App extends React.Component {
             <div>
                 <Header title="PollyWannaVote" />
                 <PollyForm data={data} />
-                <SpecificCand title="Specific Candidate" />
+                <SpecificCand data={profile} />
                 <GenInfo links={links} />
             </div>
         );

@@ -1,51 +1,34 @@
-#!/usr/bin/python3
-
 #Going to 127.0.0.1:5000/getCandidatesByOffice will return json object with offices that are up
 #for election with the candidates that are running for those offices along with to what party
 #they belong
-
-from flask import Flask, jsonify, json, current_app
+from flask import Flask, jsonify, json, current_app, request
 from apiclient.discovery import build
-import csv, requests, pprint, codecs
+from state_abbreviations import state_abbr, stateConversion
+import csv, requests, pprint
 import xml.etree.ElementTree as ET
 
-API_KEY1 = open("google_api.txt", "r")
-service = build('civicinfo', 'v2', developerKey=API_KEY1.readline().splitlines())
+GOOGLE_API_FILE = open("google_api.txt", "r")
+service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
 
 VOTESMART_API_FILE = open("votesmart_api.txt", "r")
-VOTESMART_API_KEY = VOTESMART_API_FILE.readline().splitlines()
+VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
 
 app = Flask(__name__)
 
-address = "Brooklyn 2164 Stuart St NY 11229"
-request = service.elections().voterInfoQuery(address=address, electionId=2000, returnAllAvailableData=True)
-response = request.execute()
-requestElections = service.elections().electionQuery()
-responseElections = requestElections.execute()
-
-#@app.route('/getElections')
-#def getElections():
-    #elections = []
-    #for election in responseElections.get():
-        #elections.append
-
-
-@app.route('/getCandidatesByOffice', methods=['GET', 'POST'])
-def getCandidatesByOffice():
-    '''
-    encapsulate this request to GoogleCivic for each request made to
-    this endpoint
-
-    address = "Brooklyn 3039 Ocean Pkwy NY 11235"
-    request = service.elections().voterInfoQuery(
-        address=address,
-        electionId=2000,
-        returnAllAvailableData=True)
+#function to get candidates and offices they are running for based on an address
+def getCandidatesByOffice(address):
+    request = service.elections().voterInfoQuery(address=address, electionId=2000, returnAllAvailableData=True)
     response = request.execute()
-    '''
 
     candidate = []
     offices = []
+    state_for_id = None  #-- id info if we add this
+    fname_for_id = None
+    lname_for_id = None
+
+    for elem in response.get('normalizedInput').items():
+        if elem[0] == 'state':
+            state_for_id = elem[1]
     for office in response.get('contests', []):
         offices.append(office.get('office'))
     for reps in response.get('contests', []):
@@ -53,84 +36,140 @@ def getCandidatesByOffice():
             if office == reps.get('office') and office is not None:
                 for individual in reps.get('candidates'):
                     if individual is not None:
-                        '''
-                        individual_info = []
-                        individual_info.append({'office': office})
-                        individual_info.append({'name': individual.get('name')})
-                        individual_info.append({'party': individual.get('party')})
-                        candidate.append({i: individual_info})
-                        '''
+                        name = individual.get('name').split()
+                        fname_for_id = name[0]
+                        lname_for_id = name[-1]
+                        votesmart_id = getIdByLastName(fname_for_id, lname_for_id, state_for_id)
                         candidate.append({
                             'office': office,
                             'name': individual.get('name'),
-                            'party': individual.get('party')
+                            'party': individual.get('party'),
+                            'id': votesmart_id
                         })
-    # jsonStr = json.dumps(candidate)
 
-    # I need these because I'm working on different ports with ReactJs
-    # jsonify candidates directly to make the frontend response neater
     resp = jsonify(positions_and_candidates=candidate)
     resp.headers.add('Access-Control-Allow-Origin', '*')
     resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     return resp
 
-#Currently one way to find candidate ids, more work is needed here
-candidate_id = 0
-firstName = "Andrew"
-lastName = "Cuomo"
-state = "NY"
-data = 0
+def getIdByLastName(first_name, last_name, state):
+    request_id = requests.get("http://api.votesmart.org/Candidates.getByLastname?key={}&lastName={}".format(VOTESMART_API_KEY, last_name))
+    root = ET.fromstring(request_id.content)
+    cand_id = 0
+    for elem in root.findall('.//candidate'):
+        for item in elem.findall(".//firstName"):
+            if first_name in item.text:
+                cand_id = elem.find(".//candidateId").text
+    return cand_id
 
-def getCandidateId(firstName, lastName):
-    with codecs.open('id_matrix.csv', mode='r', encoding="utf-8") as csv_file:
+
+@app.route('/getCandidatesByOffice', methods=['GET', 'POST'])
+def areaSearch():
+    print('\n', "log", '\n')
+    if request.method == 'POST':
+        address = request.form['address']
+        print('\n', address, '\n')
+        if address:
+           candidates_by_area = getCandidatesByOffice(address)
+           return candidates_by_area
+
+
+#Currently one way to find candidate ids, more work is needed here
+def getCandidateId(firstName, lastName, state):
+     with open('id_matrix.csv', encoding="utf8") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
-        candidate_id = 0
         line_count = 0
+        candidate_id = 0
         for row in csv_reader:
-            #print(type(data))
             if firstName in row:
                 if lastName in row:
                     if state in row:
-                        print(row)
                         candidate_id = row[0]  #can have multiples, need to think about it
                         line_count += 1
             line_count += 1
-    return candidate_id
+        return candidate_id
 
-candidate_id = getCandidateId(firstName, lastName)
 
-#Going to http://127.0.0.1:5000/getCandidatesInfo/id/<candidateId> will return json about the selected candidate
-@app.route('/getCandidatesInfo/id/<candidate_id>', methods=['GET', 'POST'])
 def getCandidateInfo(candidate_id):
     with app.app_context():
         r = requests.get("http://api.votesmart.org/CandidateBio.getBio?key={}&candidateId={}".format(VOTESMART_API_KEY, candidate_id))
         root = ET.fromstring(r.content)
         candidate_info = {}
-        count = 0
         for child in root.iter('*'):
             if child.tag == 'preferredName':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'lastName':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'birthDate':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'birthPlace':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'parties':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'name':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'title':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                elif "Project Vote Smart" in child.text:
+                    continue
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'type':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'status':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
             elif child.tag == 'photo':
-                candidate_info.update({child.tag :child.text})
+                if child.text == None:
+                    candidate_info.update({child.tag :'N/A'})
+                else:
+                    candidate_info.update({child.tag :child.text})
         resp2 = jsonify(candidate_information=candidate_info)
         resp2.headers.add('Access-Control-Allow-Origin', '*')
         return resp2
+
+#Going to http://127.0.0.1:5000/getCandidatesInfo will return json about the selected candidate
+@app.route('/getCandidatesInfo', methods=['GET', 'POST'])
+def candidateSearch():
+    address = "3039 Ocean Pkwy Brooklyn NY 11235"
+    getCandidatesByOffice(address)
+    if request.method == 'POST':
+        #candidate_name = request.args.get('name', None)
+        candidate_name = 'Alexandria Ocasio-Cortez' #testing purposes
+        name = candidate_name.split()
+        first_name = name[0].title()
+        last_name = name[1].title()
+        #candidate_state = request.args.get('state', None)
+        candidate_state = 'New York' #testing purposes
+        candidate_state = stateConversion(candidate_state)
+        id = getCandidateId(first_name, last_name, candidate_state)
+        if id != 0:
+            candidates_info = getCandidateInfo(id)
+            return candidates_info
 
 if __name__ == '__main__':
     app.run(port = 5000, debug = True)

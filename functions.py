@@ -65,11 +65,13 @@ def getIdByLastName(first_name, last_name, state):
 
 @app.route('/getCandidatesByOffice', methods=['GET', 'POST'])
 def areaSearch():
-    if request.method == 'GET':
-        address = request.args.get('address', None)
+    print('\n', "log", '\n')
+    if request.method == 'POST':
+        address = request.form['address']
+        print('\n', address, '\n')
         if address:
-            candidates_by_area = getCandidatesByOffice(address)
-            return candidates_by_area
+           candidates_by_area = getCandidatesByOffice(address)
+           return candidates_by_area
 
 
 #Currently one way to find candidate ids, more work is needed here

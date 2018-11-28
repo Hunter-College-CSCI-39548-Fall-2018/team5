@@ -23,15 +23,24 @@ class PollyForm extends React.Component {
     }
 
     submit(i) {
+        let address = 
+        this.state.city +
+        this.state.address_one +
+        this.state.address_two +
+        this.state.state +
+        this.state.zip
+
+        console.log(address);
         $.ajax({
             url : 'http://localhost:5000/getCandidatesByOffice',
-            type: 'GET',
-            processData: false,
-            contentType: false,
+            type: 'POST',
             cache: false,
             dataType: 'json',
+            data: {
+                'address': address
+            },
             success:(data)=>{
-                
+                console.log(data)
                 /*
                 for(var i=0; i<data.positions_and_candidates.length; i++){
                     console.log(

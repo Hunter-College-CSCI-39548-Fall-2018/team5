@@ -24,13 +24,14 @@ class PollyForm extends React.Component {
 
     submit(i) {
         let address = 
-        this.state.city +
-        this.state.address_one +
-        this.state.address_two +
-        this.state.state +
+        this.state.address_one + " " +
+        this.state.address_two + " " +
+        this.state.city + " " +
+        this.state.state + " " +
         this.state.zip
 
-        console.log(address);
+        console.log("Address:", address);
+        console.log("Requesting data from /getCandidatesByOffice")
         $.ajax({
             url : 'http://localhost:5000/getCandidatesByOffice',
             type: 'POST',
@@ -90,13 +91,6 @@ class PollyForm extends React.Component {
                             <div className="form-row">
                                 <div className="col">
                                     <input className="form-control" type="text"
-                                    name="city"
-                                    placeholder={this.props.data.city}
-                                    onChange={this.handleChange}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <input className="form-control" type="text"
                                     name="address_one"
                                     placeholder={this.props.data.address_one}
                                     onChange={this.handleChange}
@@ -104,8 +98,15 @@ class PollyForm extends React.Component {
                                 </div>
                                 <div className="col">
                                     <input className="form-control" type="text"
-                                    name="address_two" 
+                                    name="address_two"
                                     placeholder={this.props.data.address_two}
+                                    onChange={this.handleChange}
+                                    />
+                                </div>
+                                <div className="col">
+                                    <input className="form-control" type="text"
+                                    name="city" 
+                                    placeholder={this.props.data.city}
                                     onChange={this.handleChange}
                                     />
                                 </div>
@@ -140,7 +141,9 @@ class PollyForm extends React.Component {
     renderList() {
         return (
             <div>
-                <Candidate data={this.state.has_data ? this.state.candidates : this.state.has_data} />
+                <Candidate data={this.state.has_data ? this.state.candidates : this.state.has_data}
+                           state={this.state.state} 
+                />
             </div>
         )
     }

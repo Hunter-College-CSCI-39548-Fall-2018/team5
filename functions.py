@@ -155,16 +155,17 @@ def getCandidateInfo(candidate_id):
 #Going to http://127.0.0.1:5000/getCandidatesInfo will return json about the selected candidate
 @app.route('/getCandidatesInfo', methods=['GET', 'POST'])
 def candidateSearch():
-    address = "3039 Ocean Pkwy Brooklyn NY 11235"
+    #address = "3039 Ocean Pkwy Brooklyn NY 11235"
     #getCandidatesByOffice(address)
-    if request.method == 'GET':
+    if request.method == 'POST':
+        print(request.form['name'], '\n', request.form['state'], '\n')
         #candidate_name = request.args.get('name', None)
-        candidate_name = 'Alexandria Ocasio-Cortez' #testing purposes
+        candidate_name = request.form['name']
         name = candidate_name.split()
         first_name = name[0].title()
         last_name = name[1].title()
         #candidate_state = request.args.get('state', None)
-        candidate_state = 'New York' #testing purposes
+        candidate_state = request.form['state']
         candidate_state = stateConversion(candidate_state)
         id = getCandidateId(first_name, last_name, candidate_state)
         if id != 0:

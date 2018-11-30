@@ -9,7 +9,8 @@ class Candidate extends React.Component {
         super(props)
         let cand_info = [];
 
-        //console.log(this.props.data)
+        console.log(this.props.data)
+        console.log(this.props.state)
 
         this.state = {candidateInfo: cand_info};
     }
@@ -29,9 +30,10 @@ class Candidate extends React.Component {
                         path={"/getCandidatesInfo/" + i.name + i.party} 
                         render={(props) => (
                             <CandidateProfile {...props} 
-                            placeholder_data={'placeholder'}
+                            id={i.id}
                             name={i.name}
                             office={i.office}
+                            state={this.props.state}
                             />
                         )}
                     />

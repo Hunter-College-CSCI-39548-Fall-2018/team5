@@ -36,6 +36,29 @@ body {
   background-color: rgb(53, 156, 99);
 }
 
+.email {
+  margin: auto;
+  width: 50%;
+  color: white;
+  background-color: mediumseagreen;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1;
+  position: relative;
+  padding: 21px;
+  border-radius: 14px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.email-text {
+  margin-left: auto;
+}
+
+.email:hover {
+  background-color: rgb(53, 156, 99);
+}
+
 .content {
   border-radius: 4px;
   color: green;
@@ -81,7 +104,7 @@ body {
 .form-control {
   display: block;
   width: 100%;
-  height: 38px;
+  height: 34px;
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;

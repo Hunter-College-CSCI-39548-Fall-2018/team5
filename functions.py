@@ -168,6 +168,7 @@ def candidateSearch():
         candidate_state = request.form['state']
         candidate_state = stateConversion(candidate_state)
         id = getCandidateId(first_name, last_name, candidate_state)
+        print(id)
         if id != 0:
             candidates_info = getCandidateInfo(id)
             return candidates_info

@@ -45,9 +45,9 @@ class CandidateProfile extends React.Component {
                 console.log(data)
                 this.setState({
                     got_cand_info: true,
-                    cand_info: data
+                    cand_info: data.candidate_information
                 });
-                console.log(this.state.cand_info.candidate_information.photo)
+                console.log(this.state.cand_info.photo)
             },
             error:function(){
                 console.log("Error.")
@@ -55,25 +55,29 @@ class CandidateProfile extends React.Component {
         })
     }
     render() {
-        
         return (
             <div className="candyprofilewrapper" ref={this.MyRef}>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col text-left">
-                            <img src={this.state.cand_info.photo} className="img-fluid" alt="MAKE PHOTOS LOAD"></img>
-                        </div>
-                        <div className="col text-center">
-                            <h2>{this.props.name}</h2>
-                        </div>
-                        <div className="col text-right">
-                            top right
-                        </div>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col text-left">
+                        <img src={this.state.cand_info.photo} className="img-fluid" alt="MAKE PHOTOS LOAD"></img>
+                    </div>
+                    <div className="col text-center">
+                        <h2>{this.props.name}</h2>
+                    </div>
+                    <div className="col text-right">
+                    {this.props.action &&
+                    <button type="button" className="close" aria-label="Close" onClick={this.props.action}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    }
                     </div>
                 </div>
             </div>
+            </div>
         )
     }
+
 }
 
 export default CandidateProfile;

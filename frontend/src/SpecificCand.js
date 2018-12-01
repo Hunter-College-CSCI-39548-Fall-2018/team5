@@ -10,13 +10,24 @@ class SpecificCand extends React.Component {
 
         this.state = {
             has_data: false,
+            open: true,
+            child: false,
             cand_data: [],
             name: '',
             state: '',
         };
 
+        this.handler = this.handler.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handler() {
+        this.setState({
+            open: true,
+            child: false
+        })
+        console.log("ddd", this.state.open)
     }
 
     handleChange(event) {
@@ -32,15 +43,18 @@ class SpecificCand extends React.Component {
         event.preventDefault();
         this.setState({
             has_data: true,
+            child: true,
+            open: false,
         });
 
         console.log(this.state.name, this.state.state)
     }
 
     render() {
-        return (
-            <div className="pollyform">
-            <div className="title">
+        if (this.state.open === true) {
+            return (
+                <div className="pollyform">
+                <div className="title">
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-row">
                         <div className="col">
@@ -60,23 +74,33 @@ class SpecificCand extends React.Component {
                         <input type="submit" value="Submit" />
                     </div>
                 </form>
-            </div>
-            <div className={this.state.has_data ? "content content-open" : "content"}>
+                </div>
+                <div className={this.state.has_data ? "content content-open" : "content"}>
+                    <div className={this.state.has_data ? "content-text content-text-open" : "content-text"}>
+                        {this.state.has_data ? this.renderCandidate() : "noData"}
+                    </div>
+                </div>
+                </div>
+            )
+        } else {
+            return (
+                <div className={this.state.has_data ? "content content-open" : "content"}>
                 <div className={this.state.has_data ? "content-text content-text-open" : "content-text"}>
                     {this.state.has_data ? this.renderCandidate() : "noData"}
                 </div>
-            </div>
-            </div>
-        )
+                </div>
+            )
+        }
     }
 
     renderCandidate() {
-        return(
-            <div className="candwrapper">
-                <CandidateProfile name={this.state.name} state={this.state.state} />
-                <h1>aaa</h1>
-            </div>
-        )
+        if (this.state.child === true) {
+            return(
+                <div className="candwrapper">
+                    <CandidateProfile name={this.state.name} state={this.state.state} action={this.handler} />
+                </div>
+            )
+        }
     }
 }
 

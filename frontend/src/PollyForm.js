@@ -1,6 +1,8 @@
 import React from 'react';
 import $ from 'jquery'; 
 import Candidate from './Candidate'
+import SyncLoader from 'react-spinners/SyncLoader';
+
 
 // Form used for ADDRESS querying
 class PollyForm extends React.Component {
@@ -16,6 +18,7 @@ class PollyForm extends React.Component {
             address_two: '',
             state: '',
             zip: '',
+            is_loading: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,6 +35,9 @@ class PollyForm extends React.Component {
 
         console.log("Address:", address);
         console.log("Requesting data from /getCandidatesByOffice")
+        this.setState({
+            is_loading: true,
+        })
         $.ajax({
             url : 'http://localhost:5000/getCandidatesByOffice',
             type: 'POST',
@@ -56,7 +62,8 @@ class PollyForm extends React.Component {
                 this.props.data.open = !this.props.data.open;
                 this.setState({
                     has_data: true,
-                    candidates: data.positions_and_candidates
+                    candidates: data.positions_and_candidates,
+                    is_loading: false
                 });
             },
             error:function(){
@@ -129,6 +136,13 @@ class PollyForm extends React.Component {
                         </form>
                     </span>
                 </div>
+                    {this.state.is_loading && 
+                        <div className="loadingwrapper">
+                        <div className="row justify-content-center">
+                        <SyncLoader color={"mediumseagreen"} position={"absolute"} margin={"10px"}/>
+                        </div>
+                        </div>
+                    }
                 <div className={this.props.data.open ? "content content-open" : "content"}>
                     <div className={this.props.data.open ? "content-text content-text-open" : "content-text"}>
                         {this.state.has_data ? this.renderList() : "noData"}

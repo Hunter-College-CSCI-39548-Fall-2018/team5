@@ -92,10 +92,11 @@ body {
   border-radius: 0px;
   -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   border-bottom: 2px solid rgb(53, 156, 99);
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #fff !important;
 }
 
 .form-control:hover {
@@ -138,6 +139,14 @@ body {
   transition: all .2s ease-in;
 }
 
+.spcandwrapper {
+  margin: 8vh;
+  height: 70vh;
+  color: white;
+  border-radius: 14px;
+  transition: all .2s ease-in;
+}
+
 .candidate {
   color: white;
   background-color: mediumseagreen;
@@ -150,9 +159,49 @@ body {
 }
 
 .candyprofilewrapper {
-  height: 90vh;
-  background-color: red;
+  padding: 1em;
+  height: 70vh;
+  background-color: rgb(53, 156, 99);
+  animation: profilebloom .8s ease-in-out 1;
 }
+
+.close {
+  float: right;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 0 #000000;
+  opacity: .5;
+}
+
+.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+  color: #fff;
+  text-decoration: none;
+  opacity: .9;
+}
+
+.close:focus {
+  float: right;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 0 #000000;
+  opacity: .8;
+}
+
+.close:hover {
+  float: right;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 0 #000000;
+  opacity: .8;
+}
+
+
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -160,4 +209,31 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: #fff !important;
+}
+
+.loadingwrapper {
+  margin: 8vh;
+  animation: expand .5s ease-in-out 1;
+}
+
+@keyframes expand {
+  0% {
+    margin: 0vh;
+  }
+
+  100% {
+    margin: 8vh;
+  }
+}
+
+@keyframes profilebloom {
+  0% {
+    background-color: mediumseagreen;
+    height: 0vh;
+  }
+
+  100% {
+    background-color: rgb(53, 156, 99);
+    height: 70vh;
+  }
 }

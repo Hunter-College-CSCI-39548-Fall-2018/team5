@@ -84,10 +84,8 @@ class SpecificCand extends React.Component {
             )
         } else {
             return (
-                <div className={this.state.has_data ? "content content-open" : "content"}>
-                <div className={this.state.has_data ? "content-text content-text-open" : "content-text"}>
+                <div className={this.state.has_data ? "spcandwrapper" : "content"}>
                     {this.state.has_data ? this.renderCandidate() : "noData"}
-                </div>
                 </div>
             )
         }
@@ -96,9 +94,7 @@ class SpecificCand extends React.Component {
     renderCandidate() {
         if (this.state.child === true) {
             return(
-                <div className="candwrapper">
                     <CandidateProfile name={this.state.name} state={this.state.state} action={this.handler} />
-                </div>
             )
         }
     }

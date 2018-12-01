@@ -26,6 +26,7 @@ class CandidateProfile extends React.Component {
         console.log("Component Mounted!")
         ReactDOM.findDOMNode(this).scrollIntoView({
             behavior: 'smooth',
+            block: 'start',
         })
         this.getCandInfo()
     }
@@ -59,18 +60,34 @@ class CandidateProfile extends React.Component {
             <div className="candyprofilewrapper" ref={this.MyRef}>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col text-left">
-                        <img src={this.state.cand_info.photo} className="img-fluid" alt="MAKE PHOTOS LOAD"></img>
+                    <div className="col-3 text-left">
                     </div>
-                    <div className="col text-center">
-                        <h2>{this.props.name}</h2>
+                    <div className="col-6 text-center">
+                    <img src={this.state.cand_info.photo} className="rounded" alt=""></img>
+                        <h3>{this.state.cand_info.preferredName} {this.state.cand_info.lastName} </h3>
+                        <h4>{this.state.cand_info.parties}</h4>
                     </div>
-                    <div className="col text-right">
+                    <div className="col-3 text-right">
                     {this.props.action &&
                     <button type="button" className="close" aria-label="Close" onClick={this.props.action}>
                         <span aria-hidden="true">&times;</span>
                     </button>
                     }
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                    <p>
+                        {this.state.cand_info.birthDate}
+                    </p>
+                    <p>
+                        {this.state.cand_info.birthPlace}
+                    </p>
+                    </div>
+                    <div className="col-6">
+                    <p>
+                        {this.state.cand_info.title}
+                    </p>
                     </div>
                 </div>
             </div>

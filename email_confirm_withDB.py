@@ -15,6 +15,7 @@ def index():
         email = request.form['email']
         con = mysql.get_db()
         c = con.cursor()
+        c.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
         c.execute('SELECT count(*) from acc where email = %s group by email',(email))
         auth = c.rowcount
         if(auth == 0):

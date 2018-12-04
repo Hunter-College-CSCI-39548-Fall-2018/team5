@@ -19,7 +19,7 @@ step one:
 	mysql> create database test;
 	mysql> use test;
 	
-	Create the table, THIS IS FOR VOTESMART API ONLY SO FAR
+	Create the table, THIS IS FOR VOTESMART API and EMAILS
 
 	mysql> create table vs_ID (id varchar(255), preferredName varchar(255), lastName varchar(255), birthDate varchar(255), birthPlace varchar(255), parties varchar(255), name varchar(255), title varchar(255), type varchar(255), status varchar(255), photo varchar(255));
 
@@ -40,5 +40,20 @@ mysql> describe vs_ID;
 | status        | varchar(255) | YES  |     | NULL    |       |
 | photo         | varchar(255) | YES  |     | NULL    |       |
 +---------------+--------------+------+-----+---------+-------+
+
+	TO CREATE THE EMAIL TABLE
+	
+	mysql> create table acc (ID int PRIMARY KEY auto_increment, email varchar(40), confirm Boolean);
+
+	to check the email table
+
+mysql> describe acc;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| ID      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| email   | varchar(40) | YES  |     | NULL    |                |
+| confirm | tinyint(1)  | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
 
 CLOSE mysql

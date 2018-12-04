@@ -226,7 +226,9 @@ def getFecId(first_name, last_name, state):
 def getFecInfo(candidate_fec_id):
     with app.app_context():
         response3 = requests.get("https://api.open.fec.gov/v1/candidate/{}/totals/?page=1&sort_null_only=false&sort_hide_null=false&sort=-cycle&sort_nulls_last=false&api_key={}&per_page=20".format(candidate_fec_id, FEC_API_KEY)).json()
-        fec_info = {}
+        fec_info = dict.fromkeys(["Total Contributions", "Total Individual Contributions", "Itemized Individual Contributions", 
+            "Unitemized Individual Contributions", "Party Committee Contributions", "Political Committee Contributions", "Transfers From Other Authorized Committees",
+            "Total Loans Received", "Total Disbursements"])
         for item in response3.get('results', []):
             fec_info.update({"Total Contributions" : item.get('contributions'),
                             "Total Individual Contributions" : item.get('individual_contributions'),
@@ -286,15 +288,14 @@ def emailstore():
     if request.method =='POST':
         email = request.form['email']
         if(validate_email(email)):
-            con = mysql.get_db()
-            c = con.cursor()
-            c.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
-            c.execute('SELECT count(*) from acc where email = %s group by email',(email))
-            auth = c.rowcount
+            cur = db.cursor()
+            #cur.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
+            cur.execute('SELECT count(*) from acc where email = %s group by email',(email))
+            auth = cur.rowcount
             if(auth == 0):
-               c.execute('insert into acc(email, confirm) values(%s, false)', (email))
-               con.commit()
-               c.close()
+               cur.execute('insert into acc(email, confirm) values(%s, false)', (email))
+               db.commit()
+               #c.close()
                msg = Message('Confirm Email', sender='test11aatest@gmail.com', recipients=[email])
                ts = time.time()
                link = url_for('confirm_email', ts=ts, email=email, _external=True)
@@ -308,11 +309,10 @@ def emailstore():
 
 @app.route('/confirm_email/<ts>/<email>')
 def confirm_email(ts,email):
-    con = mysql.get_db()
-    c = con.cursor()
-    c.execute('UPDATE acc SET confirm = true WHERE email = %s',(email))
-    con.commit()
-    c.close()
+    cur = db.cursor()
+    cur.execute('UPDATE acc SET confirm = true WHERE email = %s',(email))
+    db.commit()
+    #c.close()
     return '<h1>E-mail has Confirmed: {}</h1>'.format(email)
 
 

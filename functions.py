@@ -1,11 +1,21 @@
 #Going to 127.0.0.1:5000/getCandidatesByOffice will return json object with offices that are up
 #for election with the candidates that are running for those offices along with to what party
 #they belong
-from flask import Flask, jsonify, json, current_app, request
+from flask import Flask, jsonify, json, current_app, request, Response, url_for
+from flask_mail import Mail, Message
+from validate_email import validate_email
 from apiclient.discovery import build
 from state_abbreviations import state_abbr, stateConversion
 import csv, requests, pprint
 import xml.etree.ElementTree as ET
+import MySQLdb
+from bs4 import BeautifulSoup
+import re
+import json
+import requests
+import time
+
+#TODO add tables for openFEC and googlecivic. 
 
 GOOGLE_API_FILE = open("google_api.txt", "r")
 service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
@@ -17,6 +27,11 @@ FEC_API_FILE = open("fec_api.txt", "r")
 FEC_API_KEY = FEC_API_FILE.readline()
 
 app = Flask(__name__)
+
+db = MySQLdb.connect(host="localhost",    
+                     user="pollyUser",         
+                     passwd="polly",  
+                     db="test")
 
 #function to get candidates and offices they are running for based on an address
 def getCandidatesByOffice(address):
@@ -82,76 +97,98 @@ def getCandidateId(firstName, lastName, state):
      with open('id_matrix.csv', encoding="utf8") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
-        candidate_id = 0
+        new_id = 0
         for row in csv_reader:
             if firstName in row:
                 if lastName in row:
                     if state in row:
-                        candidate_id = row[0]  #can have multiples, need to think about it
+                        new_id = row[0]  #can have multiples, need to think about it
                         line_count += 1
             line_count += 1
-        return candidate_id
+        return new_id
 
 
 def getCandidateInfo(candidate_id):
-    with app.app_context():
-        r = requests.get("http://api.votesmart.org/CandidateBio.getBio?key={}&candidateId={}".format(VOTESMART_API_KEY, candidate_id))
-        root = ET.fromstring(r.content)
-        candidate_info = {}
-        for child in root.iter('*'):
-            if child.tag == 'preferredName':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'lastName':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'birthDate':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'birthPlace':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'parties':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'name':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'title':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                elif "Project Vote Smart" in child.text:
-                    continue
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'type':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'status':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-            elif child.tag == 'photo':
-                if child.text == None:
-                    candidate_info.update({child.tag :'N/A'})
-                else:
-                    candidate_info.update({child.tag :child.text})
-        resp2 = jsonify(candidate_information=candidate_info)
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute("SELECT * FROM vs_ID WHERE id = %s" % candidate_id)
+    row = cur.fetchone()
+    global VOTESMART_API_KEY
+    if not row:
+        with app.app_context():
+            r = requests.get("http://api.votesmart.org/CandidateBio.getBio?key={}&candidateId={}".format(VOTESMART_API_KEY, candidate_id))
+            root = ET.fromstring(r.content)
+            candidate_info = dict.fromkeys(['preferredName', 'lastName', 'birthDate', 'birthPlace', 'parties', 'name', 'title', 'type', 'status', 'photo'])
+            for child in root.iter('*'):
+                print(child.text, child.tag)
+                if child.tag == 'preferredName':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'lastName':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'birthDate':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'birthPlace':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'parties':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'name':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'title':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+                    if "Project Vote Smart" in child.text:
+                        continue
+                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'type':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'status':
+#                   if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                   else:
+                        candidate_info.update({child.tag :child.text})
+                elif child.tag == 'photo':
+#                    if child.text == None:
+#                        candidate_info.update({child.tag :'N/A'})
+#                    else:
+                        candidate_info.update({child.tag :child.text})
+            #insert new row into table vs_ID
+            print(candidate_info['lastName'])
+            print(candidate_info['title'])
+            insert_cand = "INSERT INTO vs_ID (id, preferredName, lastName, birthDate, birthPlace, parties, name, title, type, status, photo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            vals = (candidate_id, candidate_info['preferredName'], candidate_info['lastName'], candidate_info['birthDate'],
+                candidate_info['birthPlace'], candidate_info['parties'], candidate_info['name'], candidate_info['title'],
+                candidate_info['type'], candidate_info['status'], candidate_info['photo'])
+            cur.execute(insert_cand, vals)
+            db.commit()
+
+            resp2 = jsonify(candidate_information=candidate_info)
+            resp2.headers.add('Access-Control-Allow-Origin', '*')
+            return resp2
+    else:
+        resp2 = jsonify(candidate_information=row)
         resp2.headers.add('Access-Control-Allow-Origin', '*')
         return resp2
 
@@ -172,7 +209,6 @@ def candidateSearch():
         if id != 0:
             candidates_info = getCandidateInfo(id)
             return candidates_info
-
 
 def getFecId(first_name, last_name, state):
     with open('candidate_summary_2018.csv', encoding="utf8") as csv_fec_file:
@@ -221,6 +257,65 @@ def fecSearch():
         if fec_id != 0:
             fec_candidate_info = getFecInfo(fec_id)
             return fec_candidate_info
+
+#WEBSCRAPING BELOW
+#NOT TESTED YET ERRORS MAY BE PRESENT
+
+@app.route('/<name>', methods=['GET', 'POST'])
+def webscrape(name):
+    url = "https://www.google.com/search?q=" + name + "&source=lnms&tbm=nws"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
+    topic = []
+
+    for item in soup.select(".r a"):
+        start = "/url?q="
+        end = "&sa=U&ved="
+        href = item.get('href')
+        url = href[href.find(start)+len(start):href.rfind(end)]
+        topic.append({'topic': item.text, 'url': url})
+        
+    #two return formate
+    return Response(json.dumps(topic))
+    #return jsonify(results = topic)
+
+@app.route('/', methods=['GET', 'POST'])
+def emailstore():
+    if request.method == 'GET':
+        return '<form action="/" method="POST"><input name="email"><input type="submit"></form>'
+    if request.method =='POST':
+        email = request.form['email']
+        if(validate_email(email)):
+            con = mysql.get_db()
+            c = con.cursor()
+            c.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
+            c.execute('SELECT count(*) from acc where email = %s group by email',(email))
+            auth = c.rowcount
+            if(auth == 0):
+               c.execute('insert into acc(email, confirm) values(%s, false)', (email))
+               con.commit()
+               c.close()
+               msg = Message('Confirm Email', sender='test11aatest@gmail.com', recipients=[email])
+               ts = time.time()
+               link = url_for('confirm_email', ts=ts, email=email, _external=True)
+               msg.body = 'Your link is {}'.format(link)
+               mail.send(msg)
+               return '<h1>Please cofirm your e-mail{}.</h1>'.format(auth)
+            else:
+                return '<h1>e-mail exist: {}</h1>'.format(auth)
+        else:
+            return 'Invalid E-mail' 
+
+@app.route('/confirm_email/<ts>/<email>')
+def confirm_email(ts,email):
+    con = mysql.get_db()
+    c = con.cursor()
+    c.execute('UPDATE acc SET confirm = true WHERE email = %s',(email))
+    con.commit()
+    c.close()
+    return '<h1>E-mail has Confirmed: {}</h1>'.format(email)
+
+
 
 
 if __name__ == '__main__':

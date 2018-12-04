@@ -1,0 +1,44 @@
+step one:
+	Log onto mysql
+
+	$ mysql --user=root mysql
+
+	If root user has password, add -p and input it.
+	create new user called pollyUser, password polly
+
+	mysql> create user 'pollyUser'@'localhost' identified by 'polly';
+	mysql> grant all privileges on *.* to 'pollyUser'@'localhost' with grant option;
+	mysql> exit;
+
+	Log in as pollyUser to make sure you didn't mess up.
+	$ mysql -u pollyUser -p
+	password:*type the password*
+	
+	Create the database, I'm lazy so we will call it test
+	
+	mysql> create database test;
+	mysql> use test;
+	
+	Create the table, THIS IS FOR VOTESMART API ONLY SO FAR
+
+	mysql> create table vs_ID (id varchar(255), preferredName varchar(255), lastName varchar(255), birthDate varchar(255), birthPlace varchar(255), parties varchar(255), name varchar(255), title varchar(255), type varchar(255), status varchar(255), photo varchar(255));
+
+If you type describe vs_ID; you get something like this
+mysql> describe vs_ID;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| id            | varchar(255) | YES  |     | NULL    |       |
+| preferredName | varchar(255) | YES  |     | NULL    |       |
+| lastName      | varchar(255) | YES  |     | NULL    |       |
+| birthDate     | varchar(255) | YES  |     | NULL    |       |
+| birthPlace    | varchar(255) | YES  |     | NULL    |       |
+| parties       | varchar(255) | YES  |     | NULL    |       |
+| name          | varchar(255) | YES  |     | NULL    |       |
+| title         | varchar(255) | YES  |     | NULL    |       |
+| type          | varchar(255) | YES  |     | NULL    |       |
+| status        | varchar(255) | YES  |     | NULL    |       |
+| photo         | varchar(255) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+
+CLOSE mysql

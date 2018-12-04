@@ -50,7 +50,6 @@ def login():
         if(auth == 1):
             session['logged_in'] = True
             session['username'] = email
-            app.logger.info('Email Match')
             return redirect(url_for('homepage'))
         c.execute('SELECT count(*) from acc where email = %s and confirm = 0 group by email',(email))
         auth = c.rowcount
@@ -79,8 +78,7 @@ def homepage():
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    app.logger.info('Your are logout')                 
+    session.clear()               
     return redirect(url_for('login'))
 
 

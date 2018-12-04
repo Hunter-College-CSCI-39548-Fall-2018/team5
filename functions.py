@@ -170,7 +170,7 @@ def candidateSearch():
         fec_id = getFecId(first_name, last_name, candidate_state)
         print(fec_id)
         if id != 0:
-            candidates_info = getCandidateInfo(180416)
+            candidates_info = getCandidateInfo(id)
             return candidates_info
 
 

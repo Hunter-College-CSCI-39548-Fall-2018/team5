@@ -26,5 +26,6 @@ chrome-user-data
 api.txt
 google_api.txt
 votesmart_api.txt
+fec_api.txt
 .vscode
 .vscode/*

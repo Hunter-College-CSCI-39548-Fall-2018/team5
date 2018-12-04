@@ -6,18 +6,42 @@ body {
   text-align: center;
 }
 
+/* unvisited link */
+a:link {
+  color: #1a89ff;
+}
+
+/* visited link */
+a:visited {
+  color: #004a9a;
+}
+
+/* mouse over link */
+a:hover {
+  color: #3496ff;
+}
+
+/* selected link */
+a:active {
+  color: #3496ff;
+}
+
 .pollyform {
-  width: 85%;
   background-color: transparent;
-  margin: auto;
-  margin-top: 10%;
+  margin: 2em;
   position: relative;
+}
+
+.inner-gen {
+  margin-top: 50vh;
+  height: 50vh;
+  background-color: #007bff;
 }
 
 .title {
   color: white;
-  background-color: mediumseagreen;
-  letter-spacing: 1px;
+  background-color: #007bff;
+  letter-spacing: 2px;
   text-align: center;
   line-height: 1;
   position: relative;
@@ -33,14 +57,14 @@ body {
 }
 
 .title:hover {
-  background-color: rgb(53, 156, 99);
+  background-color: #006fe6;
 }
 
 .email {
   margin: auto;
   width: 50%;
   color: white;
-  background-color: mediumseagreen;
+  background-color: #007bff;
   letter-spacing: 1px;
   text-align: center;
   line-height: 1;
@@ -56,13 +80,13 @@ body {
 }
 
 .email:hover {
-  background-color: rgb(53, 156, 99);
+  background-color: #006fe6;
 }
 
 .content {
   border-radius: 4px;
-  color: green;
-  font-size: 14px;
+  color: #007bff;
+  font-size: 18px;
   text-align: center;
   position: relative;
   text-align: center;
@@ -75,9 +99,7 @@ body {
 }
 
 .content-text {
-  padding: 5px;
   visibility: hidden;
-  overflow: auto;
 }
 
 .content-text-open {
@@ -106,7 +128,7 @@ body {
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857143;
   color: white;
   background-color: transparent;
@@ -117,7 +139,7 @@ body {
   box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  border-bottom: 2px solid rgb(53, 156, 99);
+  border-bottom: 2px solid #006fe6;
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #fff !important;
 }
@@ -127,7 +149,6 @@ body {
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
   line-height: 1.42857143;
   color: white;
   background-color: transparent;
@@ -154,6 +175,9 @@ body {
   outline: 0;
   -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 0px rgba(255, 255, 255, 0.6);
   box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 0px rgba(255, 255, 255, 0.6);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 .candwrapper {
@@ -163,8 +187,7 @@ body {
 }
 
 .spcandwrapper {
-  margin: 8vh;
-  height: 70vh;
+  margin: 2em;
   color: white;
   border-radius: 14px;
   transition: all .2s ease-in;
@@ -172,20 +195,23 @@ body {
 
 .candidate {
   color: white;
-  background-color: mediumseagreen;
-  letter-spacing: 2px;
+  background-color: #007bff;
+  letter-spacing: 1.5px;
   line-height: 2;
   position: relative;
   transition: all .2s ease-in;
   padding: 8px;
-  border-bottom: 2px solid rgb(53, 156, 99);
+  box-shadow: inset 0 1px #000000;
 }
 
 .candyprofilewrapper {
   padding: 1em;
-  height: 70vh;
-  background-color: rgb(53, 156, 99);
+  height: 100vh;
+  background-color: #006fe6;
   animation: profilebloom .8s ease-in-out 1;
+  border-radius: 14px;
+  letter-spacing: 2px;
+  line-height: 2;
 }
 
 .close {
@@ -251,12 +277,10 @@ input:-webkit-autofill:active {
 
 @keyframes profilebloom {
   0% {
-    background-color: mediumseagreen;
     height: 0vh;
   }
 
   100% {
-    background-color: rgb(53, 156, 99);
     height: 70vh;
   }
 }

@@ -56,7 +56,7 @@ class CandidateProfile extends React.Component {
                 console.log(this.state.cand_info.photo)
             },
             error:function(){
-                console.log("Error.")
+                console.log("Error requesting from /getCandidatesInfo.")
             }
         })
     }
@@ -78,10 +78,9 @@ class CandidateProfile extends React.Component {
                 this.setState({
                     fec_info: data.fec_information
                 });
-                console.log(this.state.fec_info.TotalContributions)
             },
             error:function(){
-                console.log("Error.")
+                console.log("Error requesting from /getFecInfo.")
             }
         })
     }
@@ -101,7 +100,7 @@ class CandidateProfile extends React.Component {
                 });
             },
             error:function(){
-                console.log("Error.")
+                console.log("Error in webscraping.")
             }
         })
     }

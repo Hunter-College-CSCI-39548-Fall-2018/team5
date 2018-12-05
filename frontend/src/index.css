@@ -225,10 +225,12 @@ a.general {
   color: black;
   animation: profilebloom .8s ease-in-out 1;
   border-radius: 14px;
-  letter-spacing: 2px;
-  line-height: 2;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
   max-height: inherit;
   overflow: hidden;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 .leftcandy {

@@ -78,7 +78,7 @@ class CandidateProfile extends React.Component {
                 this.setState({
                     fec_info: data.fec_information
                 });
-                console.log(this.state.fec_info)
+                console.log(this.state.fec_info.TotalContributions)
             },
             error:function(){
                 console.log("Error.")
@@ -119,6 +119,32 @@ class CandidateProfile extends React.Component {
             <ul className="list-group list-group-flush news">
                 {links}
             </ul>
+        )
+    }
+
+    renderFec() {
+        const contributions = this.state.fec_info;
+
+        return (
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    Object.keys(contributions).map((key, index) => ( 
+                    <tr>
+                    <th scope="row">{key}</th>
+                    <td>{contributions[key]}</td>
+                    </tr>
+                    ))
+                }
+            </tbody>
+            </table>
+            
         )
     }
 
@@ -170,8 +196,9 @@ class CandidateProfile extends React.Component {
                     </div>
                     <div className="col-4 midcandy text-left">
                     </div>
-                    <div className="col-4 rightcandy text-center">
+                    <div className="col-4 rightcandy text-left">
                         FEC Data here
+                        {this.renderFec()}
                     </div>
                 </div>
             </div>

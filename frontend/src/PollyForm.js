@@ -139,7 +139,7 @@ class PollyForm extends React.Component {
                     {this.state.is_loading && 
                         <div className="loadingwrapper">
                         <div className="row justify-content-center">
-                        <SyncLoader color={"mediumseagreen"} position={"absolute"} margin={"10px"}/>
+                        <SyncLoader color={"#356FF4"} position={"absolute"} margin={"10px"}/>
                         </div>
                         </div>
                     }

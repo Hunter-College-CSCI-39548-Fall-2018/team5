@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery'; 
 
 class EmailForm extends React.Component {
     constructor(props){
@@ -27,20 +28,35 @@ class EmailForm extends React.Component {
     }
 
     submit(i) {
-        console.log("Implement Yins email route")
+        console.log("Attempting to sign up...");
+        $.ajax({
+            url : 'http://localhost:5000/signup',
+            type: 'POST',
+            cache: false,
+            dataType: 'json',
+            data: {
+                email: this.state.email
+            },
+            success:(data)=>{
+                console.log("success")
+            },
+            error:function(){
+                console.log("Error.")
+            }
+        })
     }
 
     render() {
         
         return (
-            <div className="pollyform">
+            <div className="bottom">
                 <div className="email">
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-row">
                         <div className="col">
                             <input className="form-control" type="text"
                             name="email"
-                            placeholder={"Email Address"}
+                            placeholder={"Sign up with your email for notifications!"}
                             onChange={this.handleChange}
                             />
                         </div>

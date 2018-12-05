@@ -22,9 +22,10 @@ class App extends React.Component {
             content: ''
         }
         let links = {
-            stackoverflow: 'https://www.stackoverflow.com',
-            google: 'https://www.google.com',
-            pollywannavote: '/'
+            usagov: 'https://www.usa.gov/voting',
+            registertovote: 'https://www.usa.gov/register-to-vote',
+            ballotpedia: 'https://ballotpedia.org/Main_Page',
+            voteeasy: 'https://voteeasy.votesmart.org/map'
         }
         return (
             <div>

@@ -31,16 +31,27 @@ a:active {
   color: #3496ff;
 }
 
+a.general {
+  color: #FF3838;
+}
+
 .pollyform {
   background-color: transparent;
   margin: 2em;
+  margin-top: 20vh;
   position: relative;
 }
 
+.bottom {
+  background-color: #E74443;
+  height: 40vh;
+  padding: 5em;
+}
+
 .inner-gen {
-  margin-top: 50vh;
+  margin-top: 30vh;
   height: 50vh;
-  background-color: #007bff;
+  background-color: #FF3838;
 }
 
 .title {
@@ -66,7 +77,9 @@ a:active {
 }
 
 .email {
+  position: relative;
   margin: auto;
+  margin-top: 10vh;
   width: 50%;
   color: white;
   background-color: #356FF4;
@@ -76,7 +89,6 @@ a:active {
   position: relative;
   padding: 21px;
   border-radius: 14px;
-  margin-top: 1em;
   margin-bottom: 1em;
 }
 
@@ -170,13 +182,8 @@ a:active {
 
 .form-control::placeholder {
   text-align: left;
-  color: #2f63db;
+  color: white;
 }
-.form-control::-webkit-input-placeholder { color: #2f63db; }  /* WebKit, Blink, Edge */
-.form-control:-moz-placeholder { color: #2f63db; }  /* Mozilla Firefox 4 to 18 */
-.form-control::-moz-placeholder { color: #2f63db; }  /* Mozilla Firefox 19+ */
-.form-control:-ms-input-placeholder { color: #2f63db; }  /* Internet Explorer 10-11 */
-.form-control::-ms-input-placeholder { color: #2f63db; }  /* Microsoft Edge */
 
 .form-control:focus {
   color: white;

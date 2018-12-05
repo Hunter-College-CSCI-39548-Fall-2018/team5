@@ -76,7 +76,7 @@ class CandidateProfile extends React.Component {
             success:(data)=>{
                 console.log(data)
                 this.setState({
-                    fec_info: data.fec_candidate_info
+                    fec_info: data.fec_information
                 });
                 console.log(this.state.fec_info)
             },
@@ -170,8 +170,8 @@ class CandidateProfile extends React.Component {
                     </div>
                     <div className="col-4 midcandy text-left">
                     </div>
-                    <div className="col-4 rightcandy text-left">
-                    a
+                    <div className="col-4 rightcandy text-center">
+                        FEC Data here
                     </div>
                 </div>
             </div>

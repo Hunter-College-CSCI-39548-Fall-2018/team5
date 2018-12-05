@@ -284,19 +284,17 @@ def webscrape(name):
     return resp
     #return jsonify(results = topic)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def emailstore():
-    if request.method == 'GET':
-        return '<form action="/" method="POST"><input name="email"><input type="submit"></form>'
     if request.method =='POST':
         email = request.form['email']
         if(validate_email(email)):
             cur = db.cursor()
             #cur.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
-            cur.execute('SELECT count(*) from acc where email = %s group by email',(email))
+            cur.execute('SELECT count(*) from acc where email = %s group by email',(email,))
             auth = cur.rowcount
             if(auth == 0):
-               cur.execute('insert into acc(email, confirm) values(%s, false)', (email))
+               cur.execute('insert into acc(email, confirm) values(%s, false)', (email,))
                db.commit()
                #c.close()
                msg = Message('Confirm Email', sender='test11aatest@gmail.com', recipients=[email])

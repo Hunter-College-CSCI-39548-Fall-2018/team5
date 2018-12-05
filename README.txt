@@ -1,0 +1,1 @@
+API keys need to be in 2 textfiles named: google_api.txt and votesmart_api.txt

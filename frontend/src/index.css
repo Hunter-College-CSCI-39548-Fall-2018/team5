@@ -1,0 +1,337 @@
+html,
+body {
+  height: 100%;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  background-color: #FAFAFF;
+}
+
+.bg-polly {
+  background-color: #0A2463;
+}
+
+/* unvisited link */
+a:link {
+  color: #5d8bf6;
+}
+
+/* visited link */
+a:visited {
+  color: #5d8bf6;
+}
+
+/* mouse over link */
+a:hover {
+  color: #3496ff;
+}
+
+/* selected link */
+a:active {
+  color: #3496ff;
+}
+
+a.general {
+  color: #FF3838;
+}
+
+.pollyform {
+  background-color: transparent;
+  margin: 2em;
+  margin-top: 20vh;
+  position: relative;
+}
+
+.bottom {
+  background-color: #E74443;
+  height: 40vh;
+  padding: 5em;
+}
+
+.inner-gen {
+  margin-top: 30vh;
+  height: 50vh;
+  background-color: #FF3838;
+}
+
+.title {
+  color: white;
+  background-color: #356FF4;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1;
+  position: relative;
+  padding: 21px;
+  border-radius: 14px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  transition: all .2s ease-in;
+}
+
+.title-text {
+  margin-left: auto;
+}
+
+.title:hover {
+  background-color: #2f63db;
+}
+
+.email {
+  position: relative;
+  margin: auto;
+  margin-top: 10vh;
+  width: 50%;
+  color: white;
+  background-color: #356FF4;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1;
+  position: relative;
+  padding: 21px;
+  border-radius: 14px;
+  margin-bottom: 1em;
+}
+
+.email-text {
+  margin-left: auto;
+}
+
+.email:hover {
+  background-color: #2f63db;
+}
+
+.content {
+  border-radius: 4px;
+  color: #007bff;
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  text-align: center;
+  height: 0;
+}
+
+.content-open {
+  margin-top: 0px;
+  height: fit-content;
+}
+
+.content-text {
+  visibility: hidden;
+}
+
+.content-text-open {
+  visibility: visible;
+  opacity: 1;
+  transition: all .1s ease-in;
+}
+
+.fa-angle-down {
+  font-size: 20px;
+  color: rgba(255,255,255, .5);
+  transition: all .6s cubic-bezier(0.080, 1.090, 0.320, 1.275);
+}
+
+.fa-rotate-180 {
+  color: rgba(255,255,255, 1);
+}
+
+.arrow-wrapper {
+  position: absolute;
+  margin-left: 375px;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.42857143;
+  color: white;
+  background-color: transparent;
+  background-image: none;
+  border: 0px solid #ccc;
+  border-radius: 0px;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  border-bottom: 2px solid #2f63db;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #fff !important;
+}
+
+.form-control:hover {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  color: white;
+  background-color: transparent;
+  background-image: none;
+  border: 0px solid #ccc;
+  border-radius: 0px;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  border-bottom: 2px solid white;
+}
+
+.form-control::placeholder {
+  text-align: left;
+  color: white;
+}
+
+.form-control:focus {
+  color: white;
+  border-color: white;
+  background-color: transparent;
+  outline: 0;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 0px rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 0px rgba(255, 255, 255, 0.6);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.candwrapper {
+  color: white;
+  border-radius: 14px;
+  transition: all .2s ease-in;
+}
+
+.spcandwrapper {
+  margin: 2em;
+  color: white;
+  border-radius: 14px;
+  transition: all .2s ease-in;
+}
+
+.candidate {
+  color: white;
+  background-color: #0A2463;
+  letter-spacing: 1.5px;
+  line-height: 2;
+  position: relative;
+  transition: all .2s ease-in;
+  padding: 8px;
+  box-shadow: inset 0 1px #fff;
+}
+
+.candyprofilewrapper {
+  color: black;
+  animation: profilebloom .8s ease-in-out 1;
+  border-radius: 14px;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+  max-height: inherit;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.leftcandy {
+  max-height: inherit;
+  background-color: #FDFDFF;
+  overflow-x: hidden;
+}
+
+.midcandy {
+  max-height: inherit;
+  background-color: #E6E6E8;
+  overflow-x: hidden;
+}
+
+.rightcandy {
+  max-height: inherit;
+  background-color: #FDFDFF;
+  overflow-x: hidden;
+}
+
+.tinytable {
+  overflow-x: hidden;
+}
+
+.close {
+  float: right;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000000;
+  text-shadow: 0 1px 0 #000000;
+  opacity: .3;
+}
+
+.news {
+  height: 70vh;
+  overflow-y: scroll;
+}
+
+.fectab {
+  height: 70vh;
+  overflow-y: scroll;
+}
+
+.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+  color: #000000;
+  text-decoration: none;
+  opacity: .9;
+}
+
+.close:focus {
+  float: right;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000000;
+  text-shadow: 0 1px 0 #000000;
+  opacity: .8;
+}
+
+.close:hover {
+  float: right;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000000;
+  text-shadow: 0 1px 0 #000000;
+  opacity: .8;
+}
+
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}
+
+.loadingwrapper {
+  margin: 8vh;
+  animation: expand .5s ease-in-out 1;
+}
+
+@keyframes expand {
+  0% {
+    margin: 0vh;
+  }
+
+  100% {
+    margin: 8vh;
+  }
+}
+
+@keyframes profilebloom {
+  0% {
+    height: 0vh;
+  }
+
+  100% {
+    height: 80vh;
+  }
+}

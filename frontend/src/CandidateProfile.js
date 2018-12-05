@@ -126,7 +126,8 @@ class CandidateProfile extends React.Component {
         const contributions = this.state.fec_info;
 
         return (
-            <table class="table table-striped">
+            <div className="container-fluid fectab">
+            <table className="table table-striped">
             <thead>
                 <tr>
                 <th scope="col">Type</th>
@@ -144,6 +145,7 @@ class CandidateProfile extends React.Component {
                 }
             </tbody>
             </table>
+            </div>
             
         )
     }
@@ -154,26 +156,9 @@ class CandidateProfile extends React.Component {
                 <div className="row">
                     <div className="col-4 text-center leftcandy">
                         <h4>{this.state.cand_info.preferredName} {this.state.cand_info.lastName}</h4>
+                        <br></br>
                         <img src={this.state.cand_info.photo} className="rounded" alt=""></img>
-                    </div>
-                    <div className="col-4 text-center midcandy">
-                        <h4>In the News</h4>
-                        {this.renderNews()}
-                    </div>
-                    <div className="col-3 rightcandy text-center">
-                        <h4>FEC Data</h4>
-                    </div>
-                    <div className="col-1 rightcandy text-right">
-                        {this.props.action &&
-                        <button type="button" className="close" aria-label="Close" onClick={this.props.action}>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        }
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-4 leftcandy text-left">
-                    <table className="table table-sm">
+                        <table className="table table-sm text-left">
                         <tbody>
                             <tr>
                             <th scope="row">Title</th>
@@ -194,10 +179,19 @@ class CandidateProfile extends React.Component {
                         </tbody>
                     </table>
                     </div>
-                    <div className="col-4 midcandy text-left">
+                    <div className="col-4 text-center midcandy">
+                        <h4>In the News</h4>
+                        <br></br>
+                        {this.renderNews()}
                     </div>
-                    <div className="col-4 rightcandy text-left">
-                        FEC Data here
+                    <div className="col-4 rightcandy text-center">
+                        {this.props.action &&
+                        <button type="button" className="close" aria-label="Close" onClick={this.props.action}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        }
+                        <h4>FEC Data</h4>
+                        <br></br>
                         {this.renderFec()}
                     </div>
                 </div>

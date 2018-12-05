@@ -11,8 +11,8 @@ class GenInfo extends React.Component {
 
     render() {
         return (
-            <div className="container-fluid">
-                <div className="card-deck inner-gen shadow p-2">
+            <div className="container-fluid inner-gen">
+                <div className="card-deck shadow p-2">
                 <div className="card">
                     <div className="card-body">
                         <h5 className="card-title"><a href={this.props.links.usagov} className="general">Voting and Elections</a></h5>

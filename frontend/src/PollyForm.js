@@ -39,7 +39,7 @@ class PollyForm extends React.Component {
             is_loading: true,
         })
         $.ajax({
-            url : 'http://localhost:5000/getCandidatesByOffice',
+            url : '/getCandidatesByOffice',
             type: 'POST',
             cache: false,
             dataType: 'json',

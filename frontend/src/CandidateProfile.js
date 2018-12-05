@@ -40,7 +40,7 @@ class CandidateProfile extends React.Component {
     getCandInfo() {    
         console.log("Requesting data from /getCandidatesInfo for", this.props.name);
         $.ajax({
-            url : 'http://localhost:5000/getCandidatesInfo',
+            url : '/getCandidatesInfo',
             type: 'POST',
             cache: false,
             dataType: 'json',
@@ -65,7 +65,7 @@ class CandidateProfile extends React.Component {
         // /getFecInfo
         console.log("Requesting data from /getFecInfo");
         $.ajax({
-            url : 'http://localhost:5000/getFecInfo',
+            url : '/getFecInfo',
             type: 'POST',
             cache: false,
             dataType: 'json',
@@ -86,7 +86,7 @@ class CandidateProfile extends React.Component {
     }
 
     scrapeNews() {
-        let cand_url = 'http://localhost:5000/' + this.props.name;
+        let cand_url = '/' + this.props.name;
         console.log("Scraping the web for", this.props.name);
         $.ajax({
             url : cand_url,

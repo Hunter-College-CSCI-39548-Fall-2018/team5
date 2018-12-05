@@ -44,13 +44,12 @@ a.general {
 
 .bottom {
   background-color: #E74443;
-  height: 40vh;
-  padding: 5em;
+  height: inherit;
 }
 
 .inner-gen {
   margin-top: 30vh;
-  height: 50vh;
+  height: inherit;
   background-color: #FF3838;
 }
 
@@ -86,7 +85,6 @@ a.general {
   letter-spacing: 1px;
   text-align: center;
   line-height: 1;
-  position: relative;
   padding: 21px;
   border-radius: 14px;
   margin-bottom: 1em;

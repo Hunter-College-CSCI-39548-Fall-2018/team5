@@ -30,7 +30,7 @@ class EmailForm extends React.Component {
     submit(i) {
         console.log("Attempting to sign up...");
         $.ajax({
-            url : 'http://localhost:5000/signup',
+            url : '/signup',
             type: 'POST',
             cache: false,
             dataType: 'json',
@@ -49,7 +49,8 @@ class EmailForm extends React.Component {
     render() {
         
         return (
-            <div className="bottom">
+            <div className="container-fluid bottom">
+            <div className="row">
                 <div className="email">
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-row">
@@ -64,6 +65,7 @@ class EmailForm extends React.Component {
                     </div>
                 </form>
                 </div>
+            </div>
             </div>
         )
     }

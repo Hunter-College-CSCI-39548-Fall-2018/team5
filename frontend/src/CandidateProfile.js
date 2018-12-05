@@ -17,7 +17,8 @@ class CandidateProfile extends React.Component {
             fec_loading: false,
             news_loading: false,
             cand_info: [],
-            fec_info: []
+            fec_info: [],
+            news: []
         }
     }
 
@@ -33,10 +34,11 @@ class CandidateProfile extends React.Component {
         })
         this.getCandInfo()
         this.getFecInfo()
+        this.scrapeNews()
     }
 
     getCandInfo() {    
-        console.log("Requesting data from /getCandidatesInfo");
+        console.log("Requesting data from /getCandidatesInfo for", this.props.name);
         $.ajax({
             url : 'http://localhost:5000/getCandidatesInfo',
             type: 'POST',
@@ -83,46 +85,93 @@ class CandidateProfile extends React.Component {
             }
         })
     }
+
+    scrapeNews() {
+        let cand_url = 'http://localhost:5000/' + this.props.name;
+        console.log("Scraping the web for", this.props.name);
+        $.ajax({
+            url : cand_url,
+            type: 'GET',
+            cache: false,
+            dataType: 'json',
+            success:(data)=>{
+                console.log(data)
+                this.setState({
+                    news: data.results
+                });
+            },
+            error:function(){
+                console.log("Error.")
+            }
+        })
+    }
+
+    renderNews() {
+        const links = this.state.news.map((i) => (
+            <div key={this.state.news.indexOf(i)}>
+                <li>
+                    <a href={i.url} className="list-group-item">{i.topic}</a>
+                </li>
+            </div>
+        ));
+
+        return (
+            <ul className="list-group list-group-flush news">
+                {links}
+            </ul>
+        )
+    }
+
     render() {
         return (
-            <div className="candyprofilewrapper shadow-sm p-3 mb-5 rounded" ref={this.MyRef}>
+            <div className="candyprofilewrapper shadow-lg mb-5 rounded" ref={this.MyRef}>
                 <div className="row">
-                    <div className="col-3 text-left">
+                    <div className="col-4 text-center leftcandy">
+                        <h4>{this.state.cand_info.preferredName} {this.state.cand_info.lastName}</h4>
                         <img src={this.state.cand_info.photo} className="rounded" alt=""></img>
-                        <h3>{this.state.cand_info.preferredName} {this.state.cand_info.lastName}</h3>
                     </div>
-                    <div className="col-6 text-center">
+                    <div className="col-4 text-center midcandy">
+                        <h4>In the News</h4>
+                        {this.renderNews()}
                     </div>
-                    <div className="col-3 text-right">
-                    {this.props.action &&
-                    <button type="button" className="close" aria-label="Close" onClick={this.props.action}>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    }
+                    <div className="col-3 rightcandy text-center">
+                        <h4>FEC Data</h4>
+                    </div>
+                    <div className="col-1 rightcandy text-right">
+                        {this.props.action &&
+                        <button type="button" className="close" aria-label="Close" onClick={this.props.action}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        }
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-4">
-                    <table class="table table-sm">
+                    <div className="col-4 leftcandy text-left">
+                    <table className="table table-sm">
                         <tbody>
                             <tr>
                             <th scope="row">Title</th>
-                            <td colspan="4">{this.state.cand_info.title}</td>
+                            <td colSpan="4">{this.state.cand_info.title}</td>
                             </tr>
                             <tr>
                             <th scope="row">Parties</th>
-                            <td colspan="4">{this.state.cand_info.parties}</td>
+                            <td colSpan="4">{this.state.cand_info.parties}</td>
                             </tr>
                             <tr>
                             <th scope="row">Birthdate</th>
-                            <td colspan="4">{this.state.cand_info.birthDate}</td>
+                            <td colSpan="4">{this.state.cand_info.birthDate}</td>
                             </tr>
                             <tr>
                             <th scope="row">Birthplace</th>
-                            <td colspan="4">{this.state.cand_info.birthPlace}</td>
+                            <td colSpan="4">{this.state.cand_info.birthPlace}</td>
                             </tr>
                         </tbody>
                     </table>
+                    </div>
+                    <div className="col-4 midcandy text-left">
+                    </div>
+                    <div className="col-4 rightcandy text-left">
+                    a
                     </div>
                 </div>
             </div>

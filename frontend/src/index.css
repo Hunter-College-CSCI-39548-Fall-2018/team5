@@ -4,16 +4,21 @@ body {
   margin: auto;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  background-color: #FAFAFF;
+}
+
+.bg-polly {
+  background-color: #0A2463;
 }
 
 /* unvisited link */
 a:link {
-  color: #1a89ff;
+  color: #5d8bf6;
 }
 
 /* visited link */
 a:visited {
-  color: #004a9a;
+  color: #5d8bf6;
 }
 
 /* mouse over link */
@@ -40,7 +45,7 @@ a:active {
 
 .title {
   color: white;
-  background-color: #007bff;
+  background-color: #356FF4;
   letter-spacing: 2px;
   text-align: center;
   line-height: 1;
@@ -57,14 +62,14 @@ a:active {
 }
 
 .title:hover {
-  background-color: #006fe6;
+  background-color: #2f63db;
 }
 
 .email {
   margin: auto;
   width: 50%;
   color: white;
-  background-color: #007bff;
+  background-color: #356FF4;
   letter-spacing: 1px;
   text-align: center;
   line-height: 1;
@@ -80,7 +85,7 @@ a:active {
 }
 
 .email:hover {
-  background-color: #006fe6;
+  background-color: #2f63db;
 }
 
 .content {
@@ -139,7 +144,7 @@ a:active {
   box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  border-bottom: 2px solid #006fe6;
+  border-bottom: 2px solid #2f63db;
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #fff !important;
 }
@@ -165,8 +170,13 @@ a:active {
 
 .form-control::placeholder {
   text-align: left;
-  color: white;
+  color: #2f63db;
 }
+.form-control::-webkit-input-placeholder { color: #2f63db; }  /* WebKit, Blink, Edge */
+.form-control:-moz-placeholder { color: #2f63db; }  /* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder { color: #2f63db; }  /* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder { color: #2f63db; }  /* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder { color: #2f63db; }  /* Microsoft Edge */
 
 .form-control:focus {
   color: white;
@@ -195,23 +205,45 @@ a:active {
 
 .candidate {
   color: white;
-  background-color: #007bff;
+  background-color: #0A2463;
   letter-spacing: 1.5px;
   line-height: 2;
   position: relative;
   transition: all .2s ease-in;
   padding: 8px;
-  box-shadow: inset 0 1px #000000;
+  box-shadow: inset 0 1px #fff;
 }
 
 .candyprofilewrapper {
-  padding: 1em;
-  height: 100vh;
-  background-color: #006fe6;
+  color: black;
   animation: profilebloom .8s ease-in-out 1;
   border-radius: 14px;
   letter-spacing: 2px;
   line-height: 2;
+  max-height: inherit;
+  overflow: hidden;
+}
+
+.leftcandy {
+  max-height: inherit;
+  background-color: #FDFDFF;
+  overflow-x: hidden;
+}
+
+.midcandy {
+  max-height: inherit;
+  background-color: #E6E6E8;
+  overflow-x: hidden;
+}
+
+.rightcandy {
+  max-height: inherit;
+  background-color: #FDFDFF;
+  overflow-x: hidden;
+}
+
+.tinytable {
+  overflow-x: hidden;
 }
 
 .close {
@@ -219,13 +251,18 @@ a:active {
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: #000000;
   text-shadow: 0 1px 0 #000000;
-  opacity: .5;
+  opacity: .3;
+}
+
+.news {
+  height: 40vh;
+  overflow-y: scroll;
 }
 
 .close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
-  color: #fff;
+  color: #000000;
   text-decoration: none;
   opacity: .9;
 }
@@ -235,7 +272,7 @@ a:active {
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: #000000;
   text-shadow: 0 1px 0 #000000;
   opacity: .8;
 }
@@ -245,7 +282,7 @@ a:active {
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: #000000;
   text-shadow: 0 1px 0 #000000;
   opacity: .8;
 }
@@ -281,6 +318,6 @@ input:-webkit-autofill:active {
   }
 
   100% {
-    height: 70vh;
+    height: 100vh;
   }
 }

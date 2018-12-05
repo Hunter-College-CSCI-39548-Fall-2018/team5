@@ -278,7 +278,10 @@ def webscrape(name):
         topic.append({'topic': item.text, 'url': url})
         
     #two return formate
-    return Response(json.dumps(topic))
+    resp = jsonify(results=topic)
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+    resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    return resp
     #return jsonify(results = topic)
 
 @app.route('/', methods=['GET', 'POST'])

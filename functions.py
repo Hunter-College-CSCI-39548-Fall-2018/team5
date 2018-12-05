@@ -296,8 +296,6 @@ def emailstore():
             cur.execute('SELECT count(*) from acc where email = %s group by email',(email,))
             auth = cur.rowcount
             if(auth == 0):
-               cur.execute('insert into acc(email, confirm) values(%s, false)', (email,))
-               db.commit()
                #c.close()
                msg = Message('Confirm Email', sender='test11aatest@gmail.com', recipients=[email])
                ts = time.time()
@@ -313,7 +311,7 @@ def emailstore():
 @app.route('/confirm_email/<ts>/<email>')
 def confirm_email(ts,email):
     cur = db.cursor()
-    cur.execute('UPDATE acc SET confirm = true WHERE email = %s',(email))
+    cur.execute('insert into acc(email) values(%s)', (email,))
     db.commit()
     #c.close()
     return '<h1>E-mail has Confirmed: {}</h1>'.format(email)

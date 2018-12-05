@@ -1,7 +1,7 @@
 #Going to 127.0.0.1:5000/getCandidatesByOffice will return json object with offices that are up
 #for election with the candidates that are running for those offices along with to what party
 #they belong
-from flask import Flask, jsonify, json, current_app, request, Response, url_for
+from flask import redirect, Flask, jsonify, json, current_app, request, Response, url_for, render_template
 from flask_mail import Mail, Message
 from validate_email import validate_email
 from apiclient.discovery import build
@@ -14,17 +14,15 @@ import re
 import json
 import requests
 import time
-
-#TODO add tables for openFEC and googlecivic. 
-
-GOOGLE_API_FILE = open("google_api.txt", "r")
-service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
-
-VOTESMART_API_FILE = open("votesmart_api.txt", "r")
-VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
+from gevent.pywsgi import WSGIServer
 
 FEC_API_FILE = open("fec_api.txt", "r")
 FEC_API_KEY = FEC_API_FILE.readline()
+VOTESMART_API_FILE = open("votesmart_api.txt", "r")
+VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
+GOOGLE_API_FILE = open("google_api.txt", "r")
+service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
+
 
 app = Flask(__name__)
 
@@ -69,6 +67,11 @@ def getCandidatesByOffice(address):
     resp.headers.add('Access-Control-Allow-Origin', '*')
     resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     return resp
+
+@app.route('/')
+def index():
+	print("hello")
+	return render_template('index.html') 
 
 def getIdByLastName(first_name, last_name, state):
     request_id = requests.get("http://api.votesmart.org/Candidates.getByLastname?key={}&lastName={}".format(VOTESMART_API_KEY, last_name))
@@ -119,6 +122,7 @@ def getCandidateInfo(candidate_id):
         with app.app_context():
             r = requests.get("http://api.votesmart.org/CandidateBio.getBio?key={}&candidateId={}".format(VOTESMART_API_KEY, candidate_id))
             root = ET.fromstring(r.content)
+            print(r.content)
             candidate_info = dict.fromkeys(['preferredName', 'lastName', 'birthDate', 'birthPlace', 'parties', 'name', 'title', 'type', 'status', 'photo'])
             for child in root.iter('*'):
                 print(child.text, child.tag)
@@ -195,13 +199,14 @@ def getCandidateInfo(candidate_id):
 #Going to http://127.0.0.1:5000/getCandidatesInfo will return json about the selected candidate
 @app.route('/getCandidatesInfo', methods=['GET', 'POST'])
 def candidateSearch():
+    print("hey, it works")
     if request.method == 'POST':
         print(request.form['name'], '\n', request.form['state'], '\n')
         candidate_name = request.form['name']
         name = candidate_name.split()
-        first_name = name[0].title()
-        last_name = name[-1].title()
-        last_nameFEC = name[1].title()
+        first_name = name[0].lower().title()
+        last_name = name[-1].lower().title()
+        last_nameFEC = name[1].lower().title()
         candidate_state = request.form['state']
         candidate_state = stateConversion(candidate_state)
         id = getCandidateId(first_name, last_name, candidate_state)
@@ -323,3 +328,9 @@ def confirm_email(ts,email):
 
 if __name__ == '__main__':
     app.run(port = 5000, debug = True)
+
+'''
+    app.debug = True 
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
+'''

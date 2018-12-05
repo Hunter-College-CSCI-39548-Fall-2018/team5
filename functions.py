@@ -200,11 +200,12 @@ def candidateSearch():
         candidate_name = request.form['name']
         name = candidate_name.split()
         first_name = name[0].title()
-        last_name = name[1].title()
+        last_name = name[-1].title()
+        last_nameFEC = name[1].title()
         candidate_state = request.form['state']
         candidate_state = stateConversion(candidate_state)
         id = getCandidateId(first_name, last_name, candidate_state)
-        fec_id = getFecId(first_name, last_name, candidate_state)
+        fec_id = getFecId(first_name, last_nameFEC, candidate_state)
         print(fec_id)
         if id != 0:
             candidates_info = getCandidateInfo(id)
@@ -265,6 +266,7 @@ def fecSearch():
 
 @app.route('/<name>', methods=['GET', 'POST'])
 def webscrape(name):
+    print("#############SCRAPING########################3")
     url = "https://www.google.com/search?q=" + name + "&source=lnms&tbm=nws"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'lxml')

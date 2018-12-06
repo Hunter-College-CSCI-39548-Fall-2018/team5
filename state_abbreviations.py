@@ -59,7 +59,9 @@ state_abbr = {
 }
 
 def stateConversion(state):
+    state = state.upper()
     if len(state) != 2:
+        state = state.lower().title()
         for abbr in state_abbr.items():
             if state in abbr:
                 state = abbr[0]

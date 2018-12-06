@@ -1,7 +1,7 @@
 #Going to 127.0.0.1:5000/getCandidatesByOffice will return json object with offices that are up
 #for election with the candidates that are running for those offices along with to what party
 #they belong
-from flask import Flask, jsonify, json, current_app, request, Response, url_for
+from flask import redirect, Flask, jsonify, json, current_app, request, Response, url_for, render_template
 from flask_mail import Mail, Message
 from validate_email import validate_email
 from apiclient.discovery import build
@@ -14,19 +14,17 @@ import re
 import json
 import requests
 import time
-
-#TODO add tables for openFEC and googlecivic. 
-
-GOOGLE_API_FILE = open("google_api.txt", "r")
-service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
-
-VOTESMART_API_FILE = open("votesmart_api.txt", "r")
-VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
+from gevent.pywsgi import WSGIServer
+app = Flask(__name__)
+app.config.from_pyfile('config.cfg')
+mail = Mail(app)
 
 FEC_API_FILE = open("fec_api.txt", "r")
 FEC_API_KEY = FEC_API_FILE.readline()
-
-app = Flask(__name__)
+VOTESMART_API_FILE = open("votesmart_api.txt", "r")
+VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
+GOOGLE_API_FILE = open("google_api.txt", "r")
+service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
 
 db = MySQLdb.connect(host="localhost",    
                      user="pollyUser",         
@@ -70,6 +68,11 @@ def getCandidatesByOffice(address):
     resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     return resp
 
+@app.route('/')
+def index():
+	#print("hello")
+	return render_template('index.html') 
+
 def getIdByLastName(first_name, last_name, state):
     request_id = requests.get("http://api.votesmart.org/Candidates.getByLastname?key={}&lastName={}".format(VOTESMART_API_KEY, last_name))
     root = ET.fromstring(request_id.content)
@@ -83,10 +86,10 @@ def getIdByLastName(first_name, last_name, state):
 
 @app.route('/getCandidatesByOffice', methods=['GET', 'POST'])
 def areaSearch():
-    print('\n', "log", '\n')
+    #print('\n', "log", '\n')
     if request.method == 'POST':
         address = request.form['address']
-        print('\n', address, '\n')
+        #print('\n', address, '\n')
         if address:
            candidates_by_area = getCandidatesByOffice(address)
            return candidates_by_area
@@ -119,9 +122,10 @@ def getCandidateInfo(candidate_id):
         with app.app_context():
             r = requests.get("http://api.votesmart.org/CandidateBio.getBio?key={}&candidateId={}".format(VOTESMART_API_KEY, candidate_id))
             root = ET.fromstring(r.content)
+            #print(r.content)
             candidate_info = dict.fromkeys(['preferredName', 'lastName', 'birthDate', 'birthPlace', 'parties', 'name', 'title', 'type', 'status', 'photo'])
             for child in root.iter('*'):
-                print(child.text, child.tag)
+                #print(child.text, child.tag)
                 if child.tag == 'preferredName':
 #                    if child.text == None:
 #                        candidate_info.update({child.tag :'N/A'})
@@ -175,8 +179,8 @@ def getCandidateInfo(candidate_id):
 #                    else:
                         candidate_info.update({child.tag :child.text})
             #insert new row into table vs_ID
-            print(candidate_info['lastName'])
-            print(candidate_info['title'])
+            #print(candidate_info['lastName'])
+            #print(candidate_info['title'])
             insert_cand = "INSERT INTO vs_ID (id, preferredName, lastName, birthDate, birthPlace, parties, name, title, type, status, photo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             vals = (candidate_id, candidate_info['preferredName'], candidate_info['lastName'], candidate_info['birthDate'],
                 candidate_info['birthPlace'], candidate_info['parties'], candidate_info['name'], candidate_info['title'],
@@ -195,13 +199,14 @@ def getCandidateInfo(candidate_id):
 #Going to http://127.0.0.1:5000/getCandidatesInfo will return json about the selected candidate
 @app.route('/getCandidatesInfo', methods=['GET', 'POST'])
 def candidateSearch():
+    #print("hey, it works")
     if request.method == 'POST':
         print(request.form['name'], '\n', request.form['state'], '\n')
         candidate_name = request.form['name']
         name = candidate_name.split()
-        first_name = name[0].title()
-        last_name = name[-1].title()
-        last_nameFEC = name[1].title()
+        first_name = name[0].lower().title()
+        last_name = name[-1].lower().title()
+        last_nameFEC = name[1].lower().title()
         candidate_state = request.form['state']
         candidate_state = stateConversion(candidate_state)
         id = getCandidateId(first_name, last_name, candidate_state)
@@ -248,7 +253,7 @@ def getFecInfo(candidate_fec_id):
 @app.route('/getFecInfo', methods=['GET', 'POST'])
 def fecSearch():
     if request.method == 'POST':
-        print(request.form['name'], '\n', request.form['state'], '\n')
+        #print(request.form['name'], '\n', request.form['state'], '\n')
         candidate_name = request.form['name']
         name = candidate_name.split()
         first_name = name[0].upper()
@@ -256,7 +261,7 @@ def fecSearch():
         candidate_state = request.form['state']
         candidate_state = stateConversion(candidate_state)
         fec_id = getFecId(first_name, last_name, candidate_state)
-        print(fec_id)
+        #print(fec_id)
         if fec_id != 0:
             fec_candidate_info = getFecInfo(fec_id)
             return fec_candidate_info
@@ -266,7 +271,7 @@ def fecSearch():
 
 @app.route('/<name>', methods=['GET', 'POST'])
 def webscrape(name):
-    print("#############SCRAPING########################3")
+    #print("#############SCRAPING########################3")
     url = "https://www.google.com/search?q=" + name + "&source=lnms&tbm=nws"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'lxml')
@@ -293,10 +298,10 @@ def emailstore():
         if(validate_email(email)):
             cur = db.cursor()
             #cur.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
-            cur.execute('SELECT count(*) from acc where email = %s group by email',(email,))
+            cur.execute('SELECT count(*) from acc where email = %s group by email',[email])
             auth = cur.rowcount
             if(auth == 0):
-               cur.execute('insert into acc(email, confirm) values(%s, false)', (email,))
+               cur.execute('insert into acc(email, confirm) values(%s, false)', [email])
                db.commit()
                #c.close()
                msg = Message('Confirm Email', sender='test11aatest@gmail.com', recipients=[email])
@@ -313,7 +318,7 @@ def emailstore():
 @app.route('/confirm_email/<ts>/<email>')
 def confirm_email(ts,email):
     cur = db.cursor()
-    cur.execute('UPDATE acc SET confirm = true WHERE email = %s',(email))
+    cur.execute('UPDATE acc SET confirm = true WHERE email = %s',[email])
     db.commit()
     #c.close()
     return '<h1>E-mail has Confirmed: {}</h1>'.format(email)
@@ -323,3 +328,9 @@ def confirm_email(ts,email):
 
 if __name__ == '__main__':
     app.run(port = 5000, debug = True)
+
+'''
+    app.debug = True 
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
+'''

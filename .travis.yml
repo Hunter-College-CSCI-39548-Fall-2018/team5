@@ -8,12 +8,26 @@ dist: trusty
 install:
   - sudo apt-get install nodejs
   - sudo pip install flask
+  - sudo apt-get install python3.6
+  - sudo apt-get pip install flask
+  - sudo python3 pip install --upgrade google-api-python-client
+  - sudo python3 pip install apiclient
+  - sudo python3 -m pip install BeautifulSoup4
+  - sudo apt-get install python3.6-dev libmysqlclient-dev
+  - sudo -H pip3 install mysqlclient
+  - sudo python3 -m pip install flask_mail
+  - sudo python3 -m pip install validate_email
+
 # run any set of arbitrary shell commands before your build
 before_script:
   - echo 'i run before the build'
 # run any set of arbitrary shell commands as your build
 script:
   - echo 'this is my build'
+
+  - export FLASK_APP=functions.py
+  - flask run
+
 # run any set of arbitrary shell commands if your build succeeds
 after_success:
   - echo 'this runs if the build succeeds'

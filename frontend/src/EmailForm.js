@@ -59,6 +59,7 @@ class EmailForm extends React.Component {
                             name="email"
                             placeholder={"Sign up with your email for notifications!"}
                             onChange={this.handleChange}
+                            required
                             />
                         </div>
                         <input type="submit" value="Submit" />

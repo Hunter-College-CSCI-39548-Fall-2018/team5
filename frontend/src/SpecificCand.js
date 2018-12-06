@@ -27,7 +27,6 @@ class SpecificCand extends React.Component {
             open: true,
             child: false
         })
-        console.log("ddd", this.state.open)
     }
 
     handleChange(event) {
@@ -39,12 +38,14 @@ class SpecificCand extends React.Component {
     }
 
     handleSubmit(event) {
+        alert('submit!');
         event.preventDefault();
         this.setState({
             has_data: true,
             child: true,
             open: false,
         });
+
         console.log(this.state.name, this.state.state)
     }
 
@@ -60,6 +61,7 @@ class SpecificCand extends React.Component {
                                     name="name"
                                     placeholder={"Specific Candidate"}
                                     onChange={this.handleChange}
+                                    required
                             />
                         </div>
                         <div className="col">
@@ -67,6 +69,7 @@ class SpecificCand extends React.Component {
                                 name="state"
                                 placeholder={"State"}
                                 onChange={this.handleChange}
+                                required
                             />
                         </div>
                         <input type="submit" value="Submit" />

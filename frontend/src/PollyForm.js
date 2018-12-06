@@ -69,10 +69,10 @@ class PollyForm extends React.Component {
             error:function(){
                 console.log("Error.")
                 alert('Whoops something went wrong!');
-            }
-        })
-        this.setState({
-            is_loading: false,
+                this.setState({
+                    is_loading: false
+                })
+            }.bind(this)
         })
     }
 
@@ -104,6 +104,7 @@ class PollyForm extends React.Component {
                                     name="address_one"
                                     placeholder={this.props.data.address_one}
                                     onChange={this.handleChange}
+                                    required
                                     />
                                 </div>
                                 <div className="col">
@@ -111,6 +112,7 @@ class PollyForm extends React.Component {
                                     name="address_two"
                                     placeholder={this.props.data.address_two}
                                     onChange={this.handleChange}
+                                    required
                                     />
                                 </div>
                                 <div className="col">
@@ -118,6 +120,7 @@ class PollyForm extends React.Component {
                                     name="city" 
                                     placeholder={this.props.data.city}
                                     onChange={this.handleChange}
+                                    required
                                     />
                                 </div>
                                 <div className="col">
@@ -125,6 +128,7 @@ class PollyForm extends React.Component {
                                     name="state" 
                                     placeholder={this.props.data.state}
                                     onChange={this.handleChange}
+                                    required
                                     />
                                 </div>
                                 <div className="col">
@@ -132,6 +136,7 @@ class PollyForm extends React.Component {
                                     name="zip" 
                                     placeholder={this.props.data.zip}
                                     onChange={this.handleChange}
+                                    required
                                     />
                                 </div>
                                 <input type="submit" value="Submit" />

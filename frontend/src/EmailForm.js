@@ -35,14 +35,15 @@ class EmailForm extends React.Component {
             cache: false,
             dataType: 'json',
             data: {
-                email: this.state.email
+                email: this.state.email,
+                zip: this.state.zip
             },
             success:(data)=>{
                 console.log("success")
             },
             error:function(){
                 console.log("Error.")
-                alert('Whoops something went wrong!');
+                //alert('Whoops something went wrong!');
             }
         })
     }

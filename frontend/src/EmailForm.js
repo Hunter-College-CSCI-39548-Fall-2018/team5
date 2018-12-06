@@ -6,7 +6,8 @@ class EmailForm extends React.Component {
         super(props)
 
         this.state = {
-            email: ""
+            email: "",
+            zip: ""
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,7 +23,6 @@ class EmailForm extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('submit!');
         event.preventDefault();
         this.submit()
     }
@@ -42,6 +42,7 @@ class EmailForm extends React.Component {
             },
             error:function(){
                 console.log("Error.")
+                alert('Whoops something went wrong!');
             }
         })
     }
@@ -51,13 +52,23 @@ class EmailForm extends React.Component {
         return (
             <div className="container-fluid bottom">
             <div className="row">
+            <div className="col">
+                <h3>Sign up with your email for notifications on upcoming elections!</h3>
                 <div className="email">
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-row">
                         <div className="col">
                             <input className="form-control" type="text"
                             name="email"
-                            placeholder={"Sign up with your email for notifications!"}
+                            placeholder={"Email"}
+                            onChange={this.handleChange}
+                            required
+                            />
+                        </div>
+                        <div className="col">
+                            <input className="form-control" type="text"
+                            name="zip"
+                            placeholder={"Zip Code"}
                             onChange={this.handleChange}
                             required
                             />
@@ -66,6 +77,7 @@ class EmailForm extends React.Component {
                     </div>
                 </form>
                 </div>
+            </div>
             </div>
             </div>
         )

@@ -38,7 +38,6 @@ class SpecificCand extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('submit!');
         event.preventDefault();
         this.setState({
             has_data: true,

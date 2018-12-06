@@ -43,6 +43,9 @@ a.general {
 }
 
 .bottom {
+  color: white;
+  letter-spacing: 2px;
+  padding-top: 5em;
   background-color: #E74443;
   height: inherit;
 }

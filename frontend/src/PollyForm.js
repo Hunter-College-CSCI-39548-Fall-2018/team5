@@ -68,7 +68,11 @@ class PollyForm extends React.Component {
             },
             error:function(){
                 console.log("Error.")
+                alert('Whoops something went wrong!');
             }
+        })
+        this.setState({
+            is_loading: false,
         })
     }
 
@@ -81,7 +85,6 @@ class PollyForm extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('submit!');
         event.preventDefault();
         this.submit()
     }

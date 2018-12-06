@@ -39,14 +39,12 @@ class SpecificCand extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('submit!');
         event.preventDefault();
         this.setState({
             has_data: true,
             child: true,
             open: false,
         });
-
         console.log(this.state.name, this.state.state)
     }
 

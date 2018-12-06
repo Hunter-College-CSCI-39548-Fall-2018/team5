@@ -15,6 +15,9 @@ import json
 import requests
 import time
 from gevent.pywsgi import WSGIServer
+app = Flask(__name__)
+app.config.from_pyfile('config.cfg')
+mail = Mail(app)
 
 FEC_API_FILE = open("fec_api.txt", "r")
 FEC_API_KEY = FEC_API_FILE.readline()
@@ -22,9 +25,6 @@ VOTESMART_API_FILE = open("votesmart_api.txt", "r")
 VOTESMART_API_KEY = VOTESMART_API_FILE.readline()
 GOOGLE_API_FILE = open("google_api.txt", "r")
 service = build('civicinfo', 'v2', developerKey=GOOGLE_API_FILE.readline())
-
-
-app = Flask(__name__)
 
 db = MySQLdb.connect(host="localhost",    
                      user="pollyUser",         
@@ -298,10 +298,10 @@ def emailstore():
         if(validate_email(email)):
             cur = db.cursor()
             #cur.execute('''Create TABLE IF NOT EXISTS acc(ID int Primary key auto_increment, email varchar(32), confirm Boolean)''')
-            cur.execute('SELECT count(*) from acc where email = %s group by email',(email,))
+            cur.execute('SELECT count(*) from acc where email = %s group by email',[email])
             auth = cur.rowcount
             if(auth == 0):
-               cur.execute('insert into acc(email, confirm) values(%s, false)', (email,))
+               cur.execute('insert into acc(email, confirm) values(%s, false)', [email])
                db.commit()
                #c.close()
                msg = Message('Confirm Email', sender='test11aatest@gmail.com', recipients=[email])
@@ -318,7 +318,7 @@ def emailstore():
 @app.route('/confirm_email/<ts>/<email>')
 def confirm_email(ts,email):
     cur = db.cursor()
-    cur.execute('UPDATE acc SET confirm = true WHERE email = %s',(email))
+    cur.execute('UPDATE acc SET confirm = true WHERE email = %s',[email])
     db.commit()
     #c.close()
     return '<h1>E-mail has Confirmed: {}</h1>'.format(email)
